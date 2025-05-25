@@ -37,7 +37,7 @@
 .detail-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: #665745;
 }
 
 .detail-description {
@@ -46,7 +46,7 @@
 }
 
 .detail-price {
-  color: #227744;
+  color: #cf7500c2;
   font-size: 1.2rem;
   font-weight: bold;
 }
@@ -86,3 +86,28 @@
 .add-to-cart-button:hover {
   background-color: #36261f;
 }
+
+.quantity-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  margin-right: 2.5rem;
+  padding-right: 2.5rem;
+  color: #ae6a10;
+  font-size: 1.2rem;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-selector label {
+  margin-right: 0.5rem;
+}
+
+.total-price {
+  font-weight: bold;
+}
+
