@@ -4,3 +4,4 @@ export { Main } from './Main';
 export { MainCard } from './MainCard';
 export * from './producto';
 export * from './layout';
+export * from './nosotros';

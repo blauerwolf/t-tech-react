@@ -8,6 +8,7 @@ import {
   Header, 
   Login, 
   Main, 
+  Nosotros,
   Productos, 
   RutaProtegida 
 } from './components'
@@ -30,6 +31,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/nosotros" element={<Nosotros />} />
             <Route path="/productos" element={<Productos />} />
             <Route path="/producto/:id" element={<Detalle />} />
             <Route path="/carrito" element={

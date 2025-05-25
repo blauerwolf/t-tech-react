@@ -1,7 +1,8 @@
 .main-card-container {
   width: 100%;
-  padding: 6rem 2rem 2rem; /* Ajuste para el header fijo */
+  padding: 6rem 2rem 2rem; 
   background-color: #f8f9fa;
+  margin-top: 120px;
 }
 
 .main-card {
@@ -30,18 +31,18 @@
 }
 
 .card-button {
-  background-color: #3498db;
+  text-align: center;
+  padding: 0.5rem;
+  background-color: #4b342c;
   color: white;
-  border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s ease;
 }
 
 .card-button:hover {
-  background-color: #2980b9;
+    background-color: #794e3b;
+    color: white;
 }
 
 @media (max-width: 768px) {

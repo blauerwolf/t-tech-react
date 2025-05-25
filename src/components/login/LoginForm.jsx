@@ -6,24 +6,28 @@ import '../../styles/Login.css';
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { isAuthenticated, login } = useAuth()
-  //const [loggedIn, setLoggedIn] = useState(false);
+  const { isAuthenticated, login, userName } = useAuth()
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (username && password) {
+    if (username && username != '' && password && password != '') {
       // Simulo un login con cualquier usuario y password
-      login()
+      login(username)
     }
+
+    setUsername('')
+    setPassword('')
   };
+
+  console.log(userName, isAuthenticated)
 
   return (
     <div className="login-container">
       <div className="login-form">
         <h2>Iniciar Sesión</h2>
         {isAuthenticated ? (
-          <p>¡Sesión iniciada como <strong>{username}</strong>!</p>
+          <p>¡Sesión iniciada como <strong>{userName}</strong>!</p>
         ) : (
           <form onSubmit={handleSubmit}>
             <div>
