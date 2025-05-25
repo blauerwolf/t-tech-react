@@ -25,7 +25,7 @@ export const Nav = () => {
       </ul>
       <ul className="nav-list login-menu">
         <li className="nav-item">
-            <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav-link active" : "nav-link" }>
+            <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav-link active cart-icon" : "nav-link cart-icon" }>
               <FaShoppingCart />
             </NavLink>
         </li>
