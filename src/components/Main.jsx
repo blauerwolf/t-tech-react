@@ -1,4 +1,5 @@
 import React from "react";
+import MainCard from "./MainCard";
 
 
 export const Main = () => {
@@ -6,6 +7,7 @@ export const Main = () => {
     <main style={{ padding: "20px" }}>
       <h2>Contenido Principal</h2>
       <p>Este es un ejemplo de contenido dentro del área principal.</p>
+      <MainCard />
     </main>
   );
 };
