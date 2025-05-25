@@ -2,11 +2,14 @@
   width: 280px;
   background-color: white;
   border-radius: 10px;
-  overflow: hidden;
+  padding: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-card:hover {
@@ -56,14 +59,24 @@
 .productos-container {
   width: 100%;
   padding: 2rem 1rem;
+  padding-top: 120px;
   text-align: center;
   background-color: #f9f9f9;
 }
 
 .productos-title {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Máximo 3 líneas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 4.5em; /* Asegura espacio reservado para 3 líneas */
+  color: #a75c00;
+  padding-top: 1.5em;
+  font-size: 1.5em;
 }
 
 .productos-grid {
@@ -75,4 +88,15 @@
   margin: 0 auto;
 }
 
+.spinner-icon {
+  font-size: 2rem;
+  color: #4b342c;
+  margin-top: 1rem;
+  animation: spin 1s linear infinite;
+}
 
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
