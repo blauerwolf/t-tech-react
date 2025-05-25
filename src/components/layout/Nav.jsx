@@ -1,7 +1,9 @@
 import React from "react";
 import { NavLink } from 'react-router-dom'
+import { FaShoppingCart } from "react-icons/fa";
 
-import "../styles/Header.css";
+import "../../styles/Header.css"
+import { UserMenu } from './UserMenu'
 
 
 export const Nav = () => {
@@ -23,7 +25,14 @@ export const Nav = () => {
       </ul>
       <ul className="nav-list login-menu">
         <li className="nav-item">
-            <NavLink to="/login" className={({ isActive }) => isActive ? "nav-link active" : "nav-link" }>Iniciar sesión</NavLink>
+            <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav-link active" : "nav-link" }>
+              <FaShoppingCart />
+            </NavLink>
+        </li>
+      </ul>
+      <ul className="nav-list login-menu">
+        <li className="nav-item">
+          <UserMenu />
         </li>
       </ul>
     </nav>

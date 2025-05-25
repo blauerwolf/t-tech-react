@@ -1,0 +1,5 @@
+export { Nav } from './Nav';
+export { Footer } from './Footer';
+export { Header } from './Header';
+export { RutaProtegida } from './RutaProtegida';
+export { UserMenu } from './UserMenu';

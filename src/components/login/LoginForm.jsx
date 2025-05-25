@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import '../../styles/Login.css'; // Asegurate de importar los estilos
+
+import { useAuth } from '../../providers/AuthContext';
+import '../../styles/Login.css';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { isAuthenticated, login } = useAuth()
+  //const [loggedIn, setLoggedIn] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (username && password) {
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('username', username);
-      setLoggedIn(true);
+      // Simulo un login con cualquier usuario y password
+      login()
     }
   };
 
@@ -20,7 +22,7 @@ const LoginForm = () => {
     <div className="login-container">
       <div className="login-form">
         <h2>Iniciar Sesión</h2>
-        {loggedIn ? (
+        {isAuthenticated ? (
           <p>¡Sesión iniciada como <strong>{username}</strong>!</p>
         ) : (
           <form onSubmit={handleSubmit}>
