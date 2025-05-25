@@ -62,6 +62,22 @@
   color: #a75c00;
 }
 
+.nav-link {
+  color: rgb(76, 34, 0);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #a75c00;
+}
+
+.nav-link.active {
+  color: #a75c00; /* o el color destacado que prefieras */
+  font-weight: 700;
+}
+
 .main-menu {
   margin-right: auto;
 }

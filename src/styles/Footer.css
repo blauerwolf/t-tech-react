@@ -1,0 +1,13 @@
+footer {
+  width: 100vw; /* asegura ancho total del viewport */
+  margin: 0;
+  padding: 1rem 2rem;
+  background-color: #4e3a2b;
+  color: white;
+  box-shadow: 0 -2px 5px rgba(86, 33, 0, 0.354);
+  border-top: 1px solid rgba(128, 128, 128, 0.5);
+  position: relative;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+}
