@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import { Header, Footer, Main, Login, Productos } from './components'
+import { Header, Footer, Main, Login, Productos, Detalle } from './components'
 import './styles/App.css'
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/productos" element={<Productos />} />
+            <Route path="/producto/:id" element={<Detalle />} />
             <Route path="/login" element={<Login/>} />
           </Routes>
         </main>

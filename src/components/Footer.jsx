@@ -5,7 +5,7 @@ import '../styles/Footer.css'
 export const Footer = () => {
   return (
     <footer>
-      <p>&copy; 2025 - Gala Shop</p>
+      <p><strong>&copy; 2025 - Gala Shop</strong></p>
     </footer>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 
 import ProductCard from "./ProductCard";
-import "../../styles/Producto.css";
+import "../../styles/Productos.css";
 
 export const Productos = () => {
   const [productos, setProductos] = useState([]);
