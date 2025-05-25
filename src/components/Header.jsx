@@ -1,6 +1,7 @@
 import React from "react";
-import "../styles/Header.css";
+import { Link } from 'react-router-dom'
 
+import "../styles/Header.css";
 import { Nav } from "./Nav";
 import logo from '../assets/gala-shop.svg';
 
@@ -9,7 +10,9 @@ export const Header = () => {
     <header className="header">
       <div className="header-container">
         <div className="site-logo">
-          <img src={ logo } alt="Logo" />
+          <Link to="/">
+            <img src={ logo } alt="Logo" />          
+          </Link>
         </div>
         <Nav />
       </div>
