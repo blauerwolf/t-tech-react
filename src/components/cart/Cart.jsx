@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { FaTrashAlt } from "react-icons/fa";
 
 import "../../styles/Cart.css";
@@ -6,6 +8,7 @@ import { GenericCard } from '../layout'
 
 export const Cart = ({ userName }) => {
   const [carrito, setCarrito] = useState([]);
+  const MySwal = withReactContent(Swal);
 
   useEffect(() => {
     if (!userName) return;
@@ -42,8 +45,29 @@ export const Cart = ({ userName }) => {
   };
 
   const eliminarProducto = (id) => {
-    const nuevoCarrito = carrito.filter((item) => item.id !== id);
-    guardarCarrito(nuevoCarrito);
+
+    MySwal.fire({
+      title: '¡Atención!',
+      text: `¿Querés eliminar del carrito`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#4b342c',
+      cancelButtonText: 'Cancelar',
+      cancelButtonColor: '#d33',
+    }).then(result => {
+      if (result.isConfirmed) {
+        const nuevoCarrito = carrito.filter((item) => item.id !== id);
+        guardarCarrito(nuevoCarrito);
+        MySwal.fire({
+          title: '¡Producto eliminado!',
+          text: 'El producto ha sido eliminado del carrito.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#4b342c',
+        });
+      }
+    })
   };
 
   const vaciarCarrito = () => {
