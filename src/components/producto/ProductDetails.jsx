@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { FaShoppingCart } from "react-icons/fa";
 
 import "../../styles/ProductDetails.css";
 
 export const ProductDetails = ({ product, onAddToCart }) => {
   const [cantidad, setCantidad] = useState(1);
+  const MySwal = withReactContent(Swal);
 
   if (!product) return <p>Producto no encontrado</p>;
 
@@ -17,6 +20,13 @@ export const ProductDetails = ({ product, onAddToCart }) => {
 
   const handleAddToCart = () => {
     onAddToCart({...product, cantidad})
+    MySwal.fire({
+      title: '¡Producto agregado!',
+      text: `Agregaste ${product.title}`,
+      icon: 'success',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#4b342c',
+    })
   }
 
   return (

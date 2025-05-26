@@ -11,6 +11,7 @@ export const Detalle = () => {
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const { isAuthenticated, login, userName } = useAuth();
+  
 
   useEffect(() => {
     fetch(`https://fakestoreapi.com/products/${id}`)
