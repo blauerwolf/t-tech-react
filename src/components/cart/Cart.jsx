@@ -87,6 +87,9 @@ export const Cart = ({ userName }) => {
           </div>
         </div>
       ))}
+      <div className="cart-total">
+        <h3>Total: ${calcularTotal()}</h3>
+      </div>
     </div>
   );
 };

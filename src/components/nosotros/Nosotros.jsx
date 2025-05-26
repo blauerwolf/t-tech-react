@@ -13,7 +13,7 @@ export const Nosotros = () => {
           <li><strong>Dirección:</strong> Av. 13 N° 798 La Plata</li>
           <li><strong>Horario:</strong> Lunes a Domingos de 10:00 a 22:00 hs</li>
           <li><strong>Teléfono:</strong> (0221) 444-4444</li>
-          <li><strong>Email:</strong> info@galashopping.com</li>
+          <li><strong>Email:</strong> info@galashop.com</li>
         </ul>
       </div>
     </section>
