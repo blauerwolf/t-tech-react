@@ -15,9 +15,9 @@ export const ProductDetails = ({ product, onAddToCart }) => {
     setCantidad(Number(e.target.value));
   };
 
-  const handleAdd = () => {
-    onAddToCart(product, cantidad);
-  };
+  const handleAddToCart = () => {
+    onAddToCart({...product, cantidad})
+  }
 
   return (
     <div className="product-detail-container">
@@ -46,7 +46,7 @@ export const ProductDetails = ({ product, onAddToCart }) => {
 
         <button
           className="add-to-cart-button"
-          onClick={() => onAddToCart(product)}
+          onClick={handleAddToCart}
         >
           <FaShoppingCart />
         </button>

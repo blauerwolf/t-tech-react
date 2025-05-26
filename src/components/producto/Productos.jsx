@@ -26,35 +26,6 @@ export const Productos = () => {
       });
   }, []);
 
-  function funcionCarrito(producto) {
-    const existe = productosCarrito.find((p) => p.id === producto.id);
-    console.log(existe);
-
-    if (existe) {
-      const carritoActualizado = productosCarrito.map((p) => {
-        if (p.id === productos.id) {
-          const productoActualizado = {
-            ...p,
-            cantidad: p.cantidad + producto.cantidad,
-          };
-          return productoActualizado;
-        } else {
-          return p;
-        }
-      });
-
-      setProductosCarrito(carritoActualizado);
-    } else {
-      // No existe el producto, se agrega con su cantidad
-      const nuevoCarrito = [...productosCarrito, producto];
-      setProductosCarrito[nuevoCarrito];
-    }
-
-    setTotal(0);
-    productosCarrito.map((p) => {
-      setTotal(total + p.price * p.cantidad);
-    });
-  }
 
   if (cargando) {
     return (

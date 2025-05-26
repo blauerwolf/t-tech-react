@@ -1,42 +1,80 @@
-import React from "react";
-import "../../styles/Carrito.css";
+import React from 'react';
+import '../../styles/Carrito.css';
 
-export const Carrito = ({ cartItems, onRemoveFromCart }) => {
-  const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+export const Carrito = ({ items, onRemoveItem, onQuantityChange }) => {
+  // Debug detallado
+  console.log('Renderizando Carrito con:', {
+    itemCount: items.length,
+    sampleItem: items[0],
+    hasRemoveFn: typeof onRemoveItem === 'function',
+    hasQuantityFn: typeof onQuantityChange === 'function'
+  });
+
+  if (!Array.isArray(items)) {
+    return <div className="cart-error">Error: Formato de carrito inválido</div>;
+  }
+
+  const calculateTotal = () => {
+    return items.reduce((total, item) => {
+      const price = Number(item.price) || 0;
+      const quantity = Math.max(1, Number(item.cantidad)) || 1;
+      return total + (price * quantity);
+    }, 0);
+  };
 
   return (
-    <section className="cart-container">
-      <h2>Carrito de compras</h2>
-      {cartItems.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
+    <div className="cart-container">
+      {items.length === 0 ? (
+        <div className="empty-cart">
+          <p>Tu carrito está vacío</p>
+          <p>¡Agrega algunos productos!</p>
+        </div>
       ) : (
         <>
-          <div className="cart-items">
-            {cartItems.map((item, index) => (
-              <div className="cart-item" key={index}>
-                <img src={item.image} alt={item.title} className="cart-item-image" />
+          <div className="cart-items-list">
+            {items.map(item => (
+              <div key={`${item.id}-${Date.now()}`} className="cart-item">
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  className="cart-item-image"
+                  onError={(e) => {
+                    e.target.src = '/placeholder-product.png';
+                  }}
+                />
                 <div className="cart-item-details">
-                  <h4>{item.title}</h4>
-                  <p className="description">{item.description}</p>
-                  <p><strong>Cantidad:</strong> {item.quantity}</p>
-                  <p><strong>Precio unitario:</strong> ${item.price.toFixed(2)}</p>
-                  <p><strong>Subtotal:</strong> ${(item.price * item.quantity).toFixed(2)}</p>
+                  <h3>{item.title}</h3>
+                  <p>Precio unitario: ${item.price.toFixed(2)}</p>
+                  <div className="quantity-control">
+                    <label>Cantidad:</label>
+                    <input
+                      type="number"
+                      min="1"
+                      value={item.cantidad}
+                      onChange={(e) => onQuantityChange(item.id, e.target.value)}
+                    />
+                  </div>
+                  <p className="item-subtotal">
+                    Subtotal: ${(item.price * item.cantidad).toFixed(2)}
+                  </p>
                 </div>
-                <button className="remove-button" onClick={() => onRemoveFromCart(item)}>
-                  Eliminar
+                <button
+                  className="remove-item-btn"
+                  onClick={() => onRemoveItem(item.id)}
+                  aria-label={`Eliminar ${item.title}`}
+                >
+                  ×
                 </button>
               </div>
             ))}
           </div>
-          <div className="cart-total">
-            <h3>Total a pagar: ${totalPrice.toFixed(2)}</h3>
+          <div className="cart-summary">
+            <h3>Total del Carrito</h3>
+            <p className="cart-total">${calculateTotal().toFixed(2)}</p>
           </div>
         </>
       )}
-    </section>
+    </div>
   );
 };
 

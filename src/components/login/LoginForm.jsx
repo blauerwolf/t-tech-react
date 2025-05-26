@@ -20,7 +20,6 @@ const LoginForm = () => {
     setPassword('')
   };
 
-  console.log(userName, isAuthenticated)
 
   return (
     <div className="login-container">
