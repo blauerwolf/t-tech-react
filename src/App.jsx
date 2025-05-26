@@ -9,8 +9,10 @@ import {
   Login, 
   Main, 
   Nosotros,
+  ProductDetailsPage,
   Productos, 
-  RutaProtegida 
+  RutaProtegida,
+  UserCart
 } from './components'
 
 import { useAuth } from './providers/AuthContext'
@@ -33,10 +35,10 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/nosotros" element={<Nosotros />} />
             <Route path="/productos" element={<Productos />} />
-            <Route path="/producto/:id" element={<Detalle />} />
+            <Route path="/producto/:id" element={<ProductDetailsPage />} />
             <Route path="/carrito" element={
                 <RutaProtegida isAuthenticated={isAuthenticated}>
-                  <Carrito />
+                  <UserCart />
                 </RutaProtegida>
               }
             />

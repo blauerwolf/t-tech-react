@@ -1,4 +1,5 @@
 export { Detalle } from './Detalle'
 export { ProductCard } from './ProductCard'
 export { ProductDetails } from './ProductDetails'
+export { ProductDetailsPage } from './ProductDetailsPage'
 export { Productos } from './Productos'
