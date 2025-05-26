@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 
 import "../../styles/Cart.css";
+import { GenericCard } from '../layout'
 
 export const Cart = ({ userName }) => {
   const [carrito, setCarrito] = useState([]);
@@ -62,8 +63,23 @@ export const Cart = ({ userName }) => {
     );
   };
 
-  if (!userName) return <p>Debe iniciar sesión para ver el carrito.</p>;
-  if (carrito.length === 0) return <p>El carrito está vacío.</p>;
+  if (!userName) {
+    return (<GenericCard 
+        titulo={"Error"}    
+        bajada={"¡Debes estar logueado para acceder a tu carrito!"}
+        textoBoton={"Iniciar Sesión"}
+        destino={'/login'}
+    />);
+  }
+
+  if (carrito.length === 0) {
+    return (<GenericCard 
+        titulo={"¡No hay productos en tu carrito!"}
+        bajada={"¡Lo que estás buscando se encuentra en nuestro catálogo"}
+        textoBoton={"Ver productos"}
+        destino={'/productos'}
+    />);
+  }
 
   return (
     <div className="cart-items">
