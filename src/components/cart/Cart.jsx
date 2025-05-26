@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
+
+import '../../styles/Cart.css'
 
 export const Cart = ({ userName }) => {
   const [carrito, setCarrito] = useState([]);
@@ -58,29 +61,27 @@ export const Cart = ({ userName }) => {
   if (carrito.length === 0) return <p>El carrito está vacío.</p>;
 
   return (
-    <div>
-      <h2>Carrito de compras</h2>
-      <button onClick={vaciarCarrito} style={{ marginBottom: '1em', backgroundColor: 'red', color: 'white', padding: '0.5em 1em', border: 'none', cursor: 'pointer' }}>
-        Vaciar carrito
-      </button>
-      <ul>
-        {carrito.map(item => (
-          <li key={item.id} style={{ marginBottom: "1.5em", borderBottom: "1px solid #ccc", paddingBottom: "1em" }}>
-            <strong>{item.title}</strong><br />
-            Precio unitario: ${item.price.toFixed(2)}<br />
-            Cantidad:
-            <button onClick={() => disminuirCantidad(item.id)} style={{ marginLeft: "5px" }}>-</button>
-            <span style={{ margin: "0 10px" }}>{item.cantidad}</span>
-            <button onClick={() => aumentarCantidad(item.id)}>+</button><br />
-            Subtotal: ${(item.price * item.cantidad).toFixed(2)}<br />
-            <button onClick={() => eliminarProducto(item.id)} style={{ marginTop: "5px", color: "red" }}>
-              Eliminar producto
-            </button>
-          </li>
-        ))}
-      </ul>
-      <h3>Total: ${calcularTotal().toFixed(2)}</h3>
+    <div className="cart-items">
+  {carrito.map((item, index) => (
+    <div className="cart-item" key={index}>
+      <img
+        src={item.image}
+        alt={item.title}
+        className="cart-item-image"
+      />
+      <div className="cart-item-details">
+        <h4>{item.title}</h4>
+        <p>{item.description}</p>
+        <p>Precio unitario: ${item.price.toFixed(2)}</p>
+        <p>Cantidad: {item.cantidad}</p>
+        <p>Subtotal: ${(item.price * item.cantidad).toFixed(2)}</p>
+        <button className="remove-button" onClick={() => eliminarProducto(item.id)}>
+          <FaTrashAlt />
+        </button>
+      </div>
     </div>
+  ))}
+</div>
   );
 };
 
