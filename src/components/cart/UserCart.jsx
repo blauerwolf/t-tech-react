@@ -14,7 +14,7 @@ export const UserCart = () => {
         )
     }
   return (
-    <div>
+    <div className="cart-container">
         <Cart userName={userName} />
     </div>
   )
