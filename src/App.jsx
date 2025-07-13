@@ -10,6 +10,7 @@ import {
   ProductDetailsPage,
   Productos, 
   RutaProtegida,
+  TopBar,
   UserCart
 } from './components'
 
@@ -26,6 +27,7 @@ function App() {
     <Router>
       <div className="app-container">
         <Header />
+        <TopBar />
         
         <main className="main-content">
 
