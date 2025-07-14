@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { 
+  ContactForm,
   Footer, 
   Header, 
   Login, 
@@ -42,6 +43,7 @@ function App() {
                 </RutaProtegida>
               }
             />
+            <Route path="/contacto" element={<ContactForm />} />
             <Route path="/login" element={<Login/>} />
           </Routes>
         </main>

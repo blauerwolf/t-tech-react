@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar, Container } from "react-bootstrap";
+import { NavLink } from 'react-router-dom'
 import Image from 'react-bootstrap/Image';
 import NavEntries from "./NavEntries";
 import logo from "../../assets/gala-shop.svg";
@@ -11,7 +12,7 @@ export const TopBar = () => {
   return (
     <Navbar bg="light" expand="lg" className="header">
       <Container>
-        <Navbar.Brand href="/">
+        <Navbar.Brand as={NavLink} to="/">
           <Image src={logo} width={100} height={100} className="site-logo" alt="Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

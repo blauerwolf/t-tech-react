@@ -1,14 +1,15 @@
 import React from 'react'
+import { Container } from 'react-bootstrap';
+
 import LoginForm from './LoginForm';
 
 export const Login = () => {
   return (
-    <div>Login
-        <h1>Iniciar Sesión</h1>
-        <LoginForm />
-    </div>
-
-  )
+    <Container className="my-5 py-5">
+      <h1 className="text-center mb-4">Iniciar Sesión</h1>
+      <LoginForm />
+    </Container>
+  );
 }
 
 export default Login;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
 
 import { useAuth } from '../../providers/AuthContext';
 import '../../styles/Login.css';
@@ -22,38 +23,48 @@ const LoginForm = () => {
 
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h2>Iniciar Sesión</h2>
-        {isAuthenticated ? (
-          <p>¡Sesión iniciada como <strong>{userName}</strong>!</p>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label>Usuario:</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
+    <Container className="d-flex justify-content-center align-items-center my-5">
+      <Card style={{ maxWidth: '400px', width: '100%' }} className="p-4 shadow-sm">
+        <Card.Body>
+          <Card.Title className="text-center mb-4">Iniciar Sesión</Card.Title>
+          {isAuthenticated ? (
+            <Alert variant="success" className="text-center">
+              ¡Sesión iniciada como <strong>{userName}</strong>!
+            </Alert>
+          ) : (
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3" controlId="formUsername">
+                <Form.Label>Usuario:</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  placeholder="Ingrese su usuario"
+                />
+              </Form.Group>
 
-            <div>
-              <label>Contraseña:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+              <Form.Group className="mb-3" controlId="formPassword">
+                <Form.Label>Contraseña:</Form.Label>
+                <Form.Control
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Ingrese su contraseña"
+                />
+              </Form.Group>
 
-            <button type="submit">Ingresar</button>
-          </form>
-        )}
-      </div>
-    </div>
+              <div className="d-grid">
+                <Button variant="dark" type="submit">
+                  Ingresar
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 
