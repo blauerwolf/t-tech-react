@@ -17,6 +17,7 @@ export const Detalle = () => {
     fetch(`https://fakestoreapi.com/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setProducto(data);
         setLoading(false);
       });
