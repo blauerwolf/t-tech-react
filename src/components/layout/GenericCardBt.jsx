@@ -26,24 +26,5 @@ export const GenericCardBt = ({ titulo, bajada, textoBoton, destino }) => {
   );
 };
 
-export const CardProducto = ({ producto }) => {
-  console.log(producto);
-
-  return (
-    <Card>
-      <Card.Img
-        variant="top"
-        src={producto.imagen}
-        style={{ maxHeight: "200px", objectFit: "cover" }}
-      />
-      <Card.Body>
-        <Card.Title>{producto.name}</Card.Title>
-        <Link to={"/productos/" + producto.id}>
-          <Button variant="primary">Ver detalles del producto</Button>
-        </Link>
-      </Card.Body>
-    </Card>
-  );
-};
 
 export default GenericCardBt;

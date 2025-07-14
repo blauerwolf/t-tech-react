@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { FaShoppingCart } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { FaShoppingCart } from "react-icons/fa";
 
 import "../../styles/ProductDetails.css";
 
@@ -19,49 +19,51 @@ export const ProductDetails = ({ product, onAddToCart }) => {
   };
 
   const handleAddToCart = () => {
-    onAddToCart({...product, cantidad})
+    onAddToCart({ ...product, cantidad });
     MySwal.fire({
       title: '¡Producto agregado!',
       text: `Agregaste ${product.title}`,
       icon: 'success',
       confirmButtonText: 'Aceptar',
       confirmButtonColor: '#4b342c',
-    })
-  }
+    });
+  };
 
   return (
-    <div className="product-detail-container">
-      <img src={product.image} alt={product.title} className="detail-image" />
-      <div className="detail-info">
-        <h2 className="detail-title">{product.title}</h2>
-        <p className="detail-description">{product.description}</p>
-        <p className="detail-price">
-          Precio unitario: ${product.price.toFixed(2)}
-        </p>
-
-        <div className="quantity-price-row">
-          <div className="quantity-selector">
-            <label htmlFor="cantidad">Cantidad:</label>
-            <input
-              id="cantidad"
-              type="number"
-              min="1"
-              value={cantidad}
-              onChange={handleCantidadChange}
-              style={{ width: "60px" }}
-            />
+    <Container className="product-detail-container">
+      <Row className="g-4">
+        <Col md={4} className="d-flex justify-content-center">
+          <img src={product.image} alt={product.title} className="detail-image" />
+        </Col>
+        <Col md={8} className="detail-info">
+          <h2 className="detail-title">{product.title}</h2>
+          <p className="detail-description">{product.description}</p>
+          <p className="detail-price">Precio unitario: ${product.price.toFixed(2)}</p>
+          
+          <div className="quantity-price-row">
+            <div className="quantity-selector">
+              <label htmlFor="cantidad">Cantidad:</label>
+              <Form.Control
+                id="cantidad"
+                type="number"
+                min="1"
+                value={cantidad}
+                onChange={handleCantidadChange}
+                style={{ width: "60px" }}
+              />
+            </div>
+            <p className="total-price">Precio total: ${precioTotal}</p>
           </div>
-          <p className="total-price">Precio total: ${precioTotal}</p>
-        </div>
-
-        <button
-          className="add-to-cart-button"
-          onClick={handleAddToCart}
-        >
-          <FaShoppingCart />
-        </button>
-      </div>
-    </div>
+          
+          <Button
+            className="add-to-cart-button"
+            onClick={handleAddToCart}
+          >
+            <FaShoppingCart />
+          </Button>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
