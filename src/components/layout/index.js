@@ -1,4 +1,4 @@
-export { Nav } from './Nav';
+export { NavEntries } from './NavEntries';
 export { Footer } from './Footer';
 export { Header } from './Header';
 export { RutaProtegida } from './RutaProtegida';

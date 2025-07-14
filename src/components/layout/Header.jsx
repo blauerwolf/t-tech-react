@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom'
 
 import "../../styles/Header.css";
-import { Nav } from "./Nav";
+import { NavEntries } from "./NavEntries";
 import logo from '../../assets/gala-shop.svg';
 
 export const Header = () => {
@@ -14,7 +14,7 @@ export const Header = () => {
             <img src={ logo } alt="Logo" />          
           </Link>
         </div>
-        <Nav />
+        <NavEntries />
       </div>
     </header>
   );

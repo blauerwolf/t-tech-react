@@ -1,14 +1,16 @@
 import React from "react";
+
 import { NavLink } from 'react-router-dom'
 import { FaShoppingCart } from "react-icons/fa";
+import { Nav } from 'react-bootstrap';
 
 import "../../styles/Header.css"
 import { UserMenu } from './UserMenu'
 
 
-export const Nav = () => {
+export const NavEntries = () => {
   return (
-    <nav className="nav">
+    <Nav className="nav ms-auto">
       <ul className="nav-list main-menu">
         <li className="nav-item">
           <NavLink to="/"  className={({ isActive }) => isActive ? "nav-link active" : "nav-link" }>Inicio</NavLink>
@@ -35,8 +37,8 @@ export const Nav = () => {
           <UserMenu />
         </li>
       </ul>
-    </nav>
+    </Nav>
   );
 };
 
-export default Nav;
+export default NavEntries;
