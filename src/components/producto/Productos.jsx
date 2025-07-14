@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { FaSpinner } from "react-icons/fa";
-
 import ProductCard from "./ProductCard";
+
 import "../../styles/Productos.css";
 
 export const Productos = () => {
@@ -28,30 +29,37 @@ export const Productos = () => {
 
 
   if (cargando) {
-    return (
-      <div className="productos-container">
-        <h2 className="productos-title">Cargando productos...</h2>
-        <FaSpinner className="spinner-icon" />
-      </div>
-    )
+     return (
+      <Container className="productos-container text-center my-5">
+        <h2 className="productos-title mb-3">Cargando productos...</h2>
+        <Spinner animation="border" role="status" variant="secondary" className="spinner-icon">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      </Container>
+    );
   } else if (error) {
-    return <p>{error}</p>;
+    return (
+      <Container className="productos-container text-center my-5">
+        <p>{error}</p>
+      </Container>
+    );
   } else {
     return (
-      <div className="productos-container">
-        <h2 className="productos-title">Nuestros Productos</h2>
-        <div className="productos-grid">
+      <Container className="productos-container my-5">
+        <h2 className="productos-title text-center mb-4">Nuestros Productos</h2>
+        <Row className="productos-grid g-4">
           {productos.map((producto) => (
-            <ProductCard
-              key={producto.id}
-              id={producto.id}
-              image={producto.image}
-              name={producto.title}
-              price={producto.price}
-            />
+            <Col key={producto.id} xs={12} sm={6} md={4} lg={3}>
+              <ProductCard
+                id={producto.id}
+                image={producto.image}
+                name={producto.title}
+                price={producto.price}
+              />
+            </Col>
           ))}
-        </div>
-      </div>
+        </Row>
+      </Container>
     );
   }
 };
