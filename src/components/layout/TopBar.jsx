@@ -12,7 +12,7 @@ export const TopBar = () => {
     <Navbar bg="light" expand="lg" className="header">
       <Container>
         <Navbar.Brand href="/">
-          <Image src={logo} width={100} height={100} alt="Logo" />
+          <Image src={logo} width={100} height={100} className="site-logo" alt="Logo" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
