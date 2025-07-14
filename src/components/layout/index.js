@@ -1,6 +1,6 @@
 export { Footer } from './Footer';
 export { GenericCard } from './GenericCard';
-export { GenericCardBt } from './GenericCardBt';
+export { GenericCardBt } from './CardBt';
 export { Header } from './Header';
 export { NavEntries } from './NavEntries';
 export { RutaProtegida } from './RutaProtegida';

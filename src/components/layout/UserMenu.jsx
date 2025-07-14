@@ -1,55 +1,33 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Dropdown } from "react-bootstrap";
 import { FaUserCircle } from "react-icons/fa";
 
 import { useAuth } from '../../providers/AuthContext';
 import "../../styles/UserMenu.css";
 
 export const UserMenu = () => {
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef();
-  const { isAuthenticated, logout } = useAuth()
-  const navigate = useNavigate()
-
-  // Cerrar el menú al hacer clic fuera
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/login')
-  }
+    navigate('/login');
+  };
 
   return (
-    <div className="user-menu-container" ref={menuRef}>
-      <button className="user-icon-button" onClick={() => setOpen(!open)}>
-        <FaUserCircle />
-      </button>
-      {open && (
-        <div className="user-dropdown">
-            {
-                isAuthenticated
-                ? (
-                    <button onClick={logout} className="user-dropdown-item">
-                        Cerrar sesión
-                    </button>
-                )
-                : (
-                    <button onClick={handleLogin} className="user-dropdown-item">
-                        Iniciar Sesión
-                    </button>
-                )
-            }
-          
-        </div>
-      )}
-    </div>
+    <Dropdown align="end" className="user-menu-dropdown">
+      <Dropdown.Toggle variant="link" bsPrefix="user-icon-button">
+        <FaUserCircle size={24} className="user-icon-button" />
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        {isAuthenticated ? (
+          <Dropdown.Item onClick={logout}>Cerrar sesión</Dropdown.Item>
+        ) : (
+          <Dropdown.Item onClick={handleLogin}>Iniciar Sesión</Dropdown.Item>
+        )}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };
 
