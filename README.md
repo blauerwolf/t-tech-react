@@ -13,3 +13,7 @@ Para generar el build de instalación:
 ```
 
 ```
+
+## Panel de administrador
+Usuario: admin@galashop.com
+Password: 0303456

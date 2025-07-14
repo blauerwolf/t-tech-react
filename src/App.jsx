@@ -9,6 +9,7 @@ import {
   Footer,
   Header,
   Login,
+  LoginFirebase,
   Main,
   Nosotros,
   ProductDetailsPage,
@@ -49,7 +50,7 @@ function App() {
               }
             />
             <Route path="/contacto" element={<ContactForm />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<LoginFirebase />} />
             <Route
               path="/admin"
               element={
