@@ -6,3 +6,4 @@ export { NavEntries } from './NavEntries';
 export { RutaProtegida } from './RutaProtegida';
 export { TopBar } from './TopBar';
 export { UserMenu } from './UserMenu';
+export { RutaAdmin } from './RutaAdmin';

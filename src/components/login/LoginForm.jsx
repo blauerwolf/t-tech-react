@@ -7,7 +7,7 @@ import '../../styles/Login.css';
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { isAuthenticated, login, userName } = useAuth()
+  const { isAuthenticated, isAdmin, login, userName } = useAuth()
 
   const handleSubmit = (e) => {
     e.preventDefault();

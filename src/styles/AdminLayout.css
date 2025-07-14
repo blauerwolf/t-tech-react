@@ -1,0 +1,17 @@
+.admin-sidebar {
+  background-color: #343a40; /* dark */
+}
+
+.admin-sidebar .nav-link {
+  margin-bottom: 0.5rem;
+}
+
+.admin-sidebar .nav-link.active {
+  background-color: #495057;
+  border-radius: 4px;
+}
+
+.admin-layout .p-4 {
+  background: #f8f9fa; /* fondo claro para el contenido */
+  min-height: 100vh;
+}

@@ -1,0 +1,9 @@
+.card-title {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.card-text.display-6 {
+  font-weight: bold;
+  color: #4b342c; /* tu color de marca */
+}

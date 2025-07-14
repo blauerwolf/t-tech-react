@@ -1,4 +1,5 @@
 export { Main } from './Main';
+export * from './admin';
 export * from './cart'
 export * from './contacto';
 export * from './layout';

@@ -1,26 +1,39 @@
-import React, { createContext, useState, useContext } from 'react'
+import React, { createContext, useState, useEffect, useContext } from 'react';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
 
-export const AuthProvider =  ({ children }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [userName, setUserName] = useState(null)
+export const AuthProvider = ({ children }) => {
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    isAdmin: false,
+    userName: null
+  });
 
-    const login = (name) => {
-        setIsAuthenticated(true)
-        setUserName(name)
-    }
+  const login = (name) => {
+    setAuthState({
+      isAuthenticated: true,
+      isAdmin: name === 'admin',
+      userName: name
+    });
+  };
 
-    const logout = () => {
-        setIsAuthenticated(false)
-        setUserName(null)
-    }
+  const logout = () => {
+    setAuthState({
+      isAuthenticated: false,
+      isAdmin: false,
+      userName: null
+    });
+  };
 
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, userName }}>
-            {children}
-        </AuthContext.Provider>
-    )
-}
+  useEffect(() => {
+    console.log('Auth changed:', authState);
+  }, [authState]);
 
-export const useAuth = () => useContext(AuthContext)
+  return (
+    <AuthContext.Provider value={{ ...authState, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
