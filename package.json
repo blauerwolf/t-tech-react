@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@coreui/chartjs": "^4.0.0",
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.3.0",
+    "@coreui/react": "^5.7.1",
+    "@coreui/utils": "^2.0.2",
     "bootstrap": "^5.3.7",
     "firebase": "^11.8.1",
     "react": "^19.1.0",

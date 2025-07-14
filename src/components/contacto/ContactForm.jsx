@@ -21,7 +21,7 @@ export const ContactForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Aquí podrías enviar el formulario a un backend o API
+    // TODO: Enviar el form a una API
     setSubmitted(true);
     setFormData({ name: '', email: '', message: '' });
   };

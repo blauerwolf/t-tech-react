@@ -24,7 +24,7 @@ export const AdminProducts = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="mt-5 px-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Gestión de Productos</h2>
         <Button variant="success" onClick={handleAddProduct}>

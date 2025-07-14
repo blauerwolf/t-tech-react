@@ -5,7 +5,7 @@ import '../../styles/AdminLayout.css';
 
 export const AdminLayout = () => {
   return (
-    <Container fluid className="admin-layout">
+    <Container fluid className="admin-layout mt-5">
       <Row>
         {/* Sidebar */}
         <Col xs={12} md={3} lg={2} className="bg-dark text-white min-vh-100 p-3 admin-sidebar">

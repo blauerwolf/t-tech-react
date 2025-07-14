@@ -1,20 +1,34 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from '../../providers/AuthContext';
 import '../../styles/Login.css';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { isAuthenticated, isAdmin, login, userName } = useAuth()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (username && username != '' && password && password != '') {
       // Simulo un login con cualquier usuario y password
-      login(username)
+      const success = await login(username, password)
+
+
+      if (success) {
+        if (username === 'admin') {
+          navigate("/admin")
+        } else {
+          navigate("/");
+        }
+
+      } else {
+        console.log('Credenciales incorrectas')
+      }
     }
 
     setUsername('')

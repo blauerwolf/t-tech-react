@@ -5,7 +5,7 @@ import '../../styles/AdminDashboard.css';
 
 export const AdminDashboard = () => {
   return (
-    <Container fluid>
+    <Container fluid className="mt-5">
       <h2 className="mb-4">Dashboard de Administrador</h2>
 
       <Row>

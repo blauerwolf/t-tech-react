@@ -9,12 +9,16 @@ export const AuthProvider = ({ children }) => {
     userName: null
   });
 
-  const login = (name) => {
+  const login = async (userName, password) => {
+    // TODO: Implementar lógica de autenticación real
+
     setAuthState({
       isAuthenticated: true,
-      isAdmin: name === 'admin',
-      userName: name
+      isAdmin: userName === 'admin',
+      userName: userName
     });
+
+    return true;
   };
 
   const logout = () => {
