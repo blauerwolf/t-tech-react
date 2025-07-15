@@ -91,7 +91,7 @@ export const Productos = () => {
       {hasMore && (
         <div className="text-center mt-4">
           <button
-            className="btn btn-dark"
+            className="card-button"
             onClick={loadProductos}
             disabled={cargando}
           >
