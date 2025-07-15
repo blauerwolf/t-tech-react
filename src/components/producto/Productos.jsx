@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-import { FaSpinner } from "react-icons/fa";
 import ProductCard from "./ProductCard";
+
+//import { obtenerProductos } from '../../auth/firebase';
 
 import "../../styles/Productos.css";
 
@@ -13,7 +14,16 @@ export const Productos = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    // Reemplaza esta URL con tu API real
+    // TODO: Reemplazar con Firebase
+    
+    /*
+    obtenerProductos().then((prod) => {
+        console.log(prod)
+    }).catch((error) => {
+        console.log(error)
+    })
+    */
+
     fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((data) => {
@@ -30,7 +40,7 @@ export const Productos = () => {
 
   if (cargando) {
      return (
-      <Container className="productos-container text-center my-5">
+      <Container className="productos-container text-center my-3">
         <h2 className="productos-title mb-3">Cargando productos...</h2>
         <Spinner animation="border" role="status" variant="secondary" className="spinner-icon">
           <span className="visually-hidden">Loading...</span>
@@ -39,7 +49,7 @@ export const Productos = () => {
     );
   } else if (error) {
     return (
-      <Container className="productos-container text-center my-5">
+      <Container className="productos-container text-center my-3">
         <p>{error}</p>
       </Container>
     );

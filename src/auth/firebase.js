@@ -1,5 +1,19 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { 
+  getFirestore, 
+  collection, 
+  doc, 
+  addDoc, 
+  getDocs, 
+  updateDoc, 
+  deleteDoc,
+  query,
+  orderBy,
+  limit,
+  startAfter 
+} from "firebase/firestore";
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -8,8 +22,6 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -25,6 +37,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
@@ -95,16 +108,14 @@ export function loginEmailPass(email, password) {
   });
 }
 
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 
-const db = getFirestore(app);
-
-export function crearProducto(name, imagen, price, description) {
+/*
+export function crearProducto(name, image, price, description) {
   return new Promise(async (res, rej) => {
     try {
       const docRef = await addDoc(collection(db, "productos"), {
         name: name,
-        imagen: imagen,
+        image: image,
         price: price,
         description: description,
       });
@@ -117,18 +128,35 @@ export function crearProducto(name, imagen, price, description) {
     }
   });
 }
+*/
+export async function crearProducto(name, image, price, description) {
+  try {
+    const docRef = await addDoc(collection(db, "productos"), {
+      name,
+      image,
+      price,
+      description,
+    });
+    console.log("Document written with ID: ", docRef.id);
+    return docRef; // devolvemos directamente el docRef
+  } catch (e) {
+    console.error("Error adding document: ", e);
+    throw e; // lanzamos el error para que quien llame a la función pueda manejarlo
+  }
+}
 
+/*
 export function obtenerProductos() {
   return new Promise(async (res, rej) => {
     try {
-      const querySnapshot = await getDocs(collection(db, "users"));
+      const querySnapshot = await getDocs(collection(db, "productos"));
 
       const resultados = querySnapshot.docs.map((doc) => {
         const data = doc.data();
         return {
           id: doc.id,
           name: data.name,
-          imagen: data.imagen,
+          image: data.image,
           price: data.price,
           description: data.description,
         };
@@ -141,3 +169,74 @@ export function obtenerProductos() {
     }
   });
 }
+*/
+export async function obtenerProductos() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "productos"));
+
+    return querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    throw error;
+  }
+}
+
+// Versión con paginación
+export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
+  try {
+    let q = query(
+      collection(db, "productos"),
+      orderBy("name"),
+      limit(pageSize)
+    );
+
+    if (lastDoc) {
+      q = query(
+        collection(db, "productos"),
+        orderBy("name"),
+        startAfter(lastDoc),
+        limit(pageSize)
+      );
+    }
+
+    const snapshot = await getDocs(q);
+
+    const productos = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+
+    return { productos, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error("Error al obtener productos paginados:", error);
+    throw error;
+  }
+}
+
+export async function actualizarProducto(id, data) {
+  try {
+    const productRef = doc(db, "productos", id);
+    await updateDoc(productRef, data);
+    return true; // devolvemos true para indicar éxito (opcional)
+  } catch (err) {
+    console.error("Error al actualizar el producto: ", err);
+    throw err;
+  }
+}
+
+export async function eliminarProducto(id) {
+  try {
+    await deleteDoc(doc(db, "productos", id));
+    return id;  // devolvemos el id eliminado
+  } catch (err) {
+    console.error("Error al eliminar el producto: ", err);
+    throw err;  // lanzamos el error para manejarlo fuera
+  }
+}
+
+
