@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { collection, getDocs } from 'firebase/firestore';
 import { Container, Button, Table } from 'react-bootstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { obtenerProductos } from '../../auth/firebase';
 
 
 export const AdminProducts = () => {
@@ -11,6 +11,22 @@ export const AdminProducts = () => {
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
+
+  const loadProductos = async () => {
+    
+    try {
+      setLoading(true);
+      const productos = await obtenerProductos();
+      console.log(productos)
+      setProducts(productos);
+
+    } catch (err) {
+      console.error("Error al cargar productos: ", err);
+      setError("Parece que no pudimos obtener los productos!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Datos simulados
   const productos = [
@@ -53,7 +69,7 @@ export const AdminProducts = () => {
           </tr>
         </thead>
         <tbody>
-          {productos.map((prod) => (
+          {products.map((prod) => (
             <tr key={prod.id}>
               <td>{prod.id}</td>
               <td>{prod.nombre}</td>
