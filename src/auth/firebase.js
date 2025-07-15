@@ -5,6 +5,7 @@ import {
   collection, 
   doc, 
   addDoc, 
+  getDoc,
   getDocs, 
   updateDoc, 
   deleteDoc,
@@ -145,31 +146,7 @@ export async function crearProducto(name, image, price, description) {
   }
 }
 
-/*
-export function obtenerProductos() {
-  return new Promise(async (res, rej) => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "productos"));
 
-      const resultados = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          name: data.name,
-          image: data.image,
-          price: data.price,
-          description: data.description,
-        };
-      });
-
-      res(resultados);
-    } catch (error) {
-      console.error("Error al obtener los usuarios:", error);
-      rej(error);
-    }
-  });
-}
-*/
 export async function obtenerProductos() {
   try {
     const querySnapshot = await getDocs(collection(db, "productos"));
@@ -214,6 +191,23 @@ export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
     return { productos, lastDoc: newLastDoc };
   } catch (error) {
     console.error("Error al obtener productos paginados:", error);
+    throw error;
+  }
+}
+
+
+export async function obtenerProductoPorId(id) {
+  try {
+    const docRef = doc(db, "productos", id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() };
+    } else {
+      throw new Error("El producto no existe");
+    }
+  } catch (error) {
+    console.error("Error al obtener el producto por id:", error);
     throw error;
   }
 }
