@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import ProductCard from "./ProductCard";
 
-import { obtenerProductos, fetchProductos } from "../../auth/firebase";
+import { fetchProductos, crearProducto } from "../../auth/firebase";
 
 import "../../styles/Productos.css";
 
@@ -46,6 +46,7 @@ export const Productos = () => {
   useEffect(() => {
     loadProductos();
   }, []);
+
 
   // TODO: Apagar este bloque
   /*

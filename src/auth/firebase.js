@@ -130,13 +130,15 @@ export function crearProducto(name, image, price, description) {
   });
 }
 */
-export async function crearProducto(name, image, price, description) {
+export async function crearProducto(name, image, price, description, category, rating) {
   try {
     const docRef = await addDoc(collection(db, "productos"), {
       name,
       image,
       price,
       description,
+      category,
+      rating
     });
     console.log("Document written with ID: ", docRef.id);
     return docRef; // devolvemos directamente el docRef

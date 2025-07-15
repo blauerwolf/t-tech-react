@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "populate:db": "node ./src/helpers/populateDB.js"
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
@@ -16,6 +17,7 @@
     "@coreui/react": "^5.7.1",
     "@coreui/utils": "^2.0.2",
     "bootstrap": "^5.3.7",
+    "dotenv": "^17.2.0",
     "firebase": "^11.8.1",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
