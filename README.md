@@ -13,6 +13,10 @@ Luego ejecutar la carga inicial de productos en firebase:
 ```
 npm run populate:db
 ```
+Para limpiar la base de datos y dejarla en el estado inicial, ejecutar:  
+```
+npm run clear:db
+```
 
 ## Ejecución local
 Para ejecutar la versión de desarrollo:  
