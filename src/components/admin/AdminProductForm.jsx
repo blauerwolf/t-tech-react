@@ -94,7 +94,7 @@ export const AdminProductForm = () => {
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formProductName">
-            <Form.Label>Nombre del Producto</Form.Label>
+            <Form.Label className="product-name">Nombre del Producto</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ej: Teclado Mecánico"
@@ -106,7 +106,7 @@ export const AdminProductForm = () => {
           </Form.Group>
 
           <Form.Group as={Col} controlId="formProductPrice">
-            <Form.Label>Precio</Form.Label>
+            <Form.Label className="product-name">Precio</Form.Label>
             <Form.Control
               type="number"
               step="0.01"
@@ -120,7 +120,7 @@ export const AdminProductForm = () => {
         </Row>
 
         <Form.Group className="mb-3" controlId="formProductDescription">
-          <Form.Label>Descripción</Form.Label>
+          <Form.Label className="product-name">Descripción</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
@@ -134,7 +134,7 @@ export const AdminProductForm = () => {
 
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formProductCategory">
-            <Form.Label>Categoría</Form.Label>
+            <Form.Label className="product-name">Categoría</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ej: electronics, jewelry, men's clothing"
@@ -146,7 +146,7 @@ export const AdminProductForm = () => {
           </Form.Group>
 
           <Form.Group as={Col} controlId="formProductImage">
-            <Form.Label>URL de Imagen</Form.Label>
+            <Form.Label className="product-name">URL de Imagen</Form.Label>
             <Form.Control
               type="url"
               placeholder="Ej: https://ejemplo.com/imagen.jpg"
@@ -160,7 +160,7 @@ export const AdminProductForm = () => {
 
         <Row className="mb-3">
           <Col>
-            <Form.Label>Calificación (Rating)</Form.Label>
+            <Form.Label className="product-name">Calificación (Rating)</Form.Label>
             <Form.Group controlId="formProductRate">
               <Form.Label className="small-label">Rate (1.0 - 5.0)</Form.Label>
               <Form.Control
@@ -179,7 +179,7 @@ export const AdminProductForm = () => {
           <Col>
             <Form.Label>&nbsp;</Form.Label> {/* Espacio para alinear labels */}
             <Form.Group controlId="formProductCount">
-              <Form.Label className="small-label">Count (Número de reviews)</Form.Label>
+              <Form.Label className="product-name">Cantidad (Número de reviews)</Form.Label>
               <Form.Control
                 type="number"
                 min="0"
@@ -193,7 +193,7 @@ export const AdminProductForm = () => {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit" disabled={loading}>
+        <Button variant="primary" type="submit" disabled={loading} className="product-button">
           {loading ? 'Cargando...' : 'Añadir Producto'}
         </Button>
       </Form>
