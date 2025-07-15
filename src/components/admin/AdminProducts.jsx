@@ -5,7 +5,6 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 import { obtenerProductos } from '../../auth/firebase';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export const AdminProducts = () => {
@@ -52,7 +51,7 @@ export const AdminProducts = () => {
     <Container fluid className="mt-5 px-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Gestión de Productos</h2>
-        <Button variant="success" onClick={handleAddProduct}>
+        <Button className="product-button" variant="dark" onClick={handleAddProduct}>
           Agregar Producto
         </Button>
       </div>

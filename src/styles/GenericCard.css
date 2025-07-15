@@ -37,11 +37,13 @@
   color: white;
   text-decoration: none;
   border-radius: 5px;
+  border-color: transparent;
   transition: background 0.3s ease;
 }
 
 .card-button:hover {
     background-color: #794e3b;
+    border-color: transparent;
     color: white;
 }
 
