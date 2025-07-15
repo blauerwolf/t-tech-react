@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Container, Button, Table } from 'react-bootstrap';
+import { Container, Button, Table, Image} from 'react-bootstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+
 import { obtenerProductos } from '../../auth/firebase';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export const AdminProducts = () => {
@@ -28,16 +31,8 @@ export const AdminProducts = () => {
     }
   };
 
-  // Datos simulados
-  const productos = [
-    { id: 1, nombre: 'Producto A', precio: 25.99, stock: 10 },
-    { id: 2, nombre: 'Producto B', precio: 15.49, stock: 5 },
-    { id: 3, nombre: 'Producto C', precio: 39.99, stock: 20 },
-  ];
 
   const handleAddProduct = () => {
-    // Acción para agregar producto (ej: redirigir a formulario)
-    console.log('Agregar producto');
     navigate('/admin/productos/nuevo');
   };
 
@@ -48,6 +43,10 @@ export const AdminProducts = () => {
   const handleDelete = (id) => {
     console.log('Eliminar producto', id);
   };
+
+  useEffect(() => {
+      loadProductos();
+  }, []);
 
   return (
     <Container fluid className="mt-5 px-5">
@@ -61,7 +60,7 @@ export const AdminProducts = () => {
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Imagen</th>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Stock</th>
@@ -71,11 +70,18 @@ export const AdminProducts = () => {
         <tbody>
           {products.map((prod) => (
             <tr key={prod.id}>
-              <td>{prod.id}</td>
-              <td>{prod.nombre}</td>
-              <td>${prod.precio.toFixed(2)}</td>
-              <td>{prod.stock}</td>
-              <td>
+              <td className="text-center">
+                <Image 
+                  src={prod.image}
+                  alt={prod.name}
+                  width={100}
+                  thumbnail 
+                />
+              </td>
+              <td className="align-middle">{prod.name}</td>
+              <td className="align-middle">${prod.price.toFixed(2)}</td>
+              <td className="align-middle">{prod.rating.count}</td>
+              <td className="align-middle">
                 <Button
                   variant="warning"
                   size="sm"
