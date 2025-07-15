@@ -7,8 +7,8 @@ import '../../styles/ProductCard.css'
 // Utilizo componentes de react-bootstrap
 export const ProductCard = ({ id, image, name, price }) => {
   return (
-    <Card className="product-card text-center">
-      <Card.Img variant="top" src={ image } alt={ name} className="product-image"></Card.Img>
+    <Card className="product-card">
+      <Card.Img variant="top" src={ image } alt={ name } className="product-image"></Card.Img>
       <Card.Body className="product-info">
         <Card.Title as="h3" className="product-name">{ name }</Card.Title>
         <Card.Text className="product-price">${price}</Card.Text>

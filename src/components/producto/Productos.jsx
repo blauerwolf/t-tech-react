@@ -26,6 +26,8 @@ export const Productos = () => {
           lastDoc,
         });
 
+      console.log(productos)
+
       setProductos((prev) => [...prev, ...nuevosProductos]);
       setLastDoc(nuevoLastDoc);
 
@@ -81,7 +83,7 @@ export const Productos = () => {
             <ProductCard
               id={producto.id}
               image={producto.image}
-              name={producto.title}
+              name={producto.name}
               price={producto.price}
             />
           </Col>

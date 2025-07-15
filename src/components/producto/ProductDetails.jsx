@@ -12,6 +12,8 @@ export const ProductDetails = ({ product, onAddToCart }) => {
 
   if (!product) return <p>Producto no encontrado</p>;
 
+  console.log(product);
+
   const precioTotal = (cantidad * product.price).toFixed(2);
 
   const handleCantidadChange = (e) => {
@@ -22,7 +24,7 @@ export const ProductDetails = ({ product, onAddToCart }) => {
     onAddToCart({ ...product, cantidad });
     MySwal.fire({
       title: '¡Producto agregado!',
-      text: `Agregaste ${product.title}`,
+      text: `Agregaste ${product.name}`,
       icon: 'success',
       confirmButtonText: 'Aceptar',
       confirmButtonColor: '#4b342c',
@@ -33,10 +35,10 @@ export const ProductDetails = ({ product, onAddToCart }) => {
     <Container className="product-detail-container">
       <Row className="g-4">
         <Col md={4} className="d-flex justify-content-center">
-          <img src={product.image} alt={product.title} className="detail-image" />
+          <img src={product.image} alt={product.name} className="detail-image" />
         </Col>
         <Col md={8} className="detail-info">
-          <h2 className="detail-title">{product.title}</h2>
+          <h2 className="detail-title">{product.name}</h2>
           <p className="detail-description">{product.description}</p>
           <p className="detail-price">Precio unitario: ${product.price.toFixed(2)}</p>
           

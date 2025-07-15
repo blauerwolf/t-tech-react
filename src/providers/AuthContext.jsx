@@ -1,4 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../auth/firebase'; // ajusta la ruta según tu proyecto
 
 const AuthContext = createContext();
 
@@ -9,19 +11,31 @@ export const AuthProvider = ({ children }) => {
     userName: null
   });
 
-  const login = async (userName, password) => {
-    // TODO: Implementar lógica de autenticación real
+  // login: email y password -> consulta Firebase y obtiene custom claims
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-    setAuthState({
-      isAuthenticated: true,
-      isAdmin: userName === 'admin',
-      userName: userName
-    });
+      // obtener custom claims del token
+      const idTokenResult = await user.getIdTokenResult(true);
 
-    return true;
+      setAuthState({
+        isAuthenticated: true,
+        isAdmin: idTokenResult.claims.admin === true,
+        userName: user.displayName || user.email
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Error en login:', error);
+      throw error;
+    }
   };
 
-  const logout = () => {
+  // logout real
+  const logout = async () => {
+    await signOut(auth);
     setAuthState({
       isAuthenticated: false,
       isAdmin: false,
@@ -29,9 +43,26 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
+  // escucha cambios de sesión
   useEffect(() => {
-    console.log('Auth changed:', authState);
-  }, [authState]);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const idTokenResult = await user.getIdTokenResult();
+        setAuthState({
+          isAuthenticated: true,
+          isAdmin: idTokenResult.claims.admin === true,
+          userName: user.displayName || user.email
+        });
+      } else {
+        setAuthState({
+          isAuthenticated: false,
+          isAdmin: false,
+          userName: null
+        });
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ ...authState, login, logout }}>

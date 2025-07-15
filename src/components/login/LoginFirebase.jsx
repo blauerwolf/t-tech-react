@@ -23,8 +23,9 @@ export const LoginFirebase = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await loginEmailPass(usuario, password);
-      login(usuario);
+      //await loginEmailPass(usuario, password);
+      //login(usuario);
+      await login(usuario, password);
       dispararSweetBasico("Acceso exitoso", "", "success", "Confirmar");
       navigate("/");
     } catch (error) {
