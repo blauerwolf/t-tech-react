@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
 import { Container, Button, Table } from 'react-bootstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
+
 export const AdminProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
   // Datos simulados
   const productos = [
     { id: 1, nombre: 'Producto A', precio: 25.99, stock: 10 },
@@ -13,6 +22,7 @@ export const AdminProducts = () => {
   const handleAddProduct = () => {
     // Acción para agregar producto (ej: redirigir a formulario)
     console.log('Agregar producto');
+    navigate('/admin/productos/nuevo');
   };
 
   const handleEdit = (id) => {

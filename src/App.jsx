@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   AdminDashboard,
   AdminLayout,
+  AdminProductForm,
   AdminProducts,
   ContactForm,
   Footer,
@@ -64,6 +65,14 @@ function App() {
               element={
                 <RutaAdmin>
                   <AdminProducts />
+                </RutaAdmin>
+              }
+            />
+            <Route 
+              path="/admin/productos/nuevo"
+              element={
+                <RutaAdmin>
+                  <AdminProductForm />
                 </RutaAdmin>
               }
             />
