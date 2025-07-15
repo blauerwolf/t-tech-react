@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "populate:db": "node ./src/helpers/populateDB.js",
-    "clear:db": "node ./src/helpers/clearDB.js"
+    "clear:db": "node ./src/helpers/clearDB.js",
+    "create-admin-user": "node ./src/helpers/createAdminUser.js"
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
@@ -20,6 +21,8 @@
     "bootstrap": "^5.3.7",
     "dotenv": "^17.2.0",
     "firebase": "^11.8.1",
+    "firebase-admin": "^13.4.0",
+    "prompt-sync": "^4.2.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
