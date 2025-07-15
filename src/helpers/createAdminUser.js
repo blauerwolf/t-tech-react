@@ -1,39 +1,32 @@
 import admin from 'firebase-admin';
-import promptSync from 'prompt-sync';
+import readlineSync from 'readline-sync';
 
 // Inicializa Firebase Admin SDK
 admin.initializeApp({
-  credential: admin.credential.applicationDefault()
+  //credential: admin.credential.applicationDefault()
   // o: credential: admin.credential.cert('./ruta/credenciales.json')
+  credential: admin.credential.cert('./secrets/t-tech-react-firebase-adminsdk.json')
 });
 
-// Leer argumentos: email viene como primer argumento después de node script.js
+// Leer email desde argumentos
 const email = process.argv[2];
-
 if (!email) {
   console.error('❌ Debes indicar el email: npm run create-admin-user -- email@example.com');
   process.exit(1);
 }
 
-// Inicializar prompt
-const prompt = promptSync({ sigint: true, echo: '*' });
-
-// Pedir contraseña
-const password = prompt('Introduce la contraseña: ');
-const passwordRepeat = prompt('Repite la contraseña: ');
+// Leer contraseña SIN mostrarla
+const password = readlineSync.question('Introduce la Password: ', { hideEchoBack: true });
+const passwordRepeat = readlineSync.question('Repite la Password: ', { hideEchoBack: true });
 
 if (!password || password !== passwordRepeat) {
-  console.error('❌ Las contraseñas no coinciden o están vacías.');
+  console.error('❌ Las passwords no coinciden o están vacías.');
   process.exit(1);
 }
 
-// Crear el usuario y asignar rol
 (async () => {
   try {
-    const userRecord = await admin.auth().createUser({
-      email,
-      password
-    });
+    const userRecord = await admin.auth().createUser({ email, password });
     console.log(`✅ Usuario creado con UID: ${userRecord.uid}`);
 
     await admin.auth().setCustomUserClaims(userRecord.uid, { admin: true });

@@ -7,8 +7,25 @@ npm install
 ```
 
 ## Configuraciones
-Copiar example.env a .env y completar las variables de entorno con la configuración de firebase solicitada.  
+Copiar example.env a .env y completar las variables de entorno con la configuración de firebase solicitada. 
 
+Descargar el archivo de configuración de proyecto de firebase y colocarlo en la carpeta
+```
+/secrets
+```
+(dentro de la carpeta principal del proyecto)  
+
+## Usuarios administradores
+A continuación se puede crear un primer usuario administrador:
+```
+npm run create-admin-user -- usuario@ejemplo.com
+```
+Para listar los usuarios disponibles en el sistema se puede ejecutar:  
+```
+npm run  list-users
+```
+
+## Carga inicial de información en Firestore
 Luego ejecutar la carga inicial de productos en firebase:  
 ```
 npm run populate:db

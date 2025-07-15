@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "populate:db": "node ./src/helpers/populateDB.js",
     "clear:db": "node ./src/helpers/clearDB.js",
-    "create-admin-user": "node ./src/helpers/createAdminUser.js"
+    "create-admin-user": "node ./src/helpers/createAdminUser.js",
+    "list-users": "node ./src/helpers/listarUsuarios.js"
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
@@ -30,6 +31,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.0",
     "react-toastify": "^11.0.5",
+    "readline-sync": "^1.4.10",
     "styled-components": "^6.1.19",
     "sweetalert2": "^11.22.0",
     "sweetalert2-react-content": "^5.1.0"
