@@ -189,6 +189,7 @@ export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
     }));
 
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
+    console.log(productos);
 
     return { productos, lastDoc: newLastDoc };
   } catch (error) {

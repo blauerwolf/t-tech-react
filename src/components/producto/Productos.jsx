@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
 import ProductCard from "./ProductCard";
 
-import { fetchProductos, crearProducto } from "../../auth/firebase";
+import { fetchProductos } from "../../auth/firebase";
 
 import "../../styles/Productos.css";
 
@@ -47,24 +47,6 @@ export const Productos = () => {
     loadProductos();
   }, []);
 
-
-  // TODO: Apagar este bloque
-  /*
-  useEffect(() => {
-
-    fetch("https://fakestoreapi.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProductos(data);
-        setCargando(false);
-      })
-      .catch((err) => {
-        console.error("Error al cargar productos:", err);
-        setError("Ups! Parece que no pudimos obtener los productos!");
-        setCargando(false);
-      });
-  }, []);
-  */
 
   //if (cargando) {
   if (cargando && productos.length === 0) {

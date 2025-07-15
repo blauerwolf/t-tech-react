@@ -1,15 +1,15 @@
-import 'dotenv/config';
+import "dotenv/config";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: process.env.VITE_API_KEY,
-    authDomain: process.env.VITE_AUTH_DOMAIN,
-    projectId: process.env.VITE_PROJECT_ID,
-    storageBucket: process.env.VITE_STORAGE_BUCKET,
-    messagingSenderId: process.env.VITE_MESSAGING_SENDER_ID,
-    appId: process.env.VITE_APP_ID,
-}
+  apiKey: process.env.VITE_API_KEY,
+  authDomain: process.env.VITE_AUTH_DOMAIN,
+  projectId: process.env.VITE_PROJECT_ID,
+  storageBucket: process.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VITE_MESSAGING_SENDER_ID,
+  appId: process.env.VITE_APP_ID,
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -278,14 +278,17 @@ async function populateDB() {
     ];
 
     const promises = productosIniciales.map(async (producto) => {
-        const { id, ...productoSinId } = producto;
-      const docRef = await addDoc(collection(db, "productos"), productoSinId);
+      const { id, title, ...rest } = producto;
+      const productoTransformado = { name: title, ...rest };
+      const docRef = await addDoc(
+        collection(db, "productos"),
+        productoTransformado
+      );
       console.log("Producto agregado con ID:", docRef.id);
     });
 
     await Promise.all(promises);
     console.log("✅ Base de datos inicializada correctamente.");
-
   } catch (err) {
     console.err("❌ Error al poblar la base de datos:", err);
   }

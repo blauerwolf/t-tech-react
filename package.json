@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "populate:db": "node ./src/helpers/populateDB.js"
+    "populate:db": "node ./src/helpers/populateDB.js",
+    "clear:db": "node ./src/helpers/clearDB.js"
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
