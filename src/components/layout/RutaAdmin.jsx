@@ -3,10 +3,12 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../providers/AuthContext';
 
 export const RutaAdmin = ({ children }) => {
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, loading } = useAuth();
 
-  console.log('RutaAdmin:', isAuthenticated, isAdmin);
-
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+  
   if (!isAuthenticated || !isAdmin) {
     return <Navigate to="/login" replace />;
   }

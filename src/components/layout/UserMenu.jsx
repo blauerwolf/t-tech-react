@@ -14,6 +14,10 @@ export const UserMenu = () => {
     navigate('/login');
   };
 
+  const handleLogout = () => {
+    logout(navigate); // Pasa la función navigate al método logout del contexto
+  }
+
   return (
     <Dropdown align="end" className="user-menu-dropdown">
       <Dropdown.Toggle variant="link" bsPrefix="user-icon-button">
@@ -22,7 +26,7 @@ export const UserMenu = () => {
 
       <Dropdown.Menu>
         {isAuthenticated ? (
-          <Dropdown.Item onClick={logout}>Cerrar sesión</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Cerrar sesión</Dropdown.Item>
         ) : (
           <Dropdown.Item onClick={handleLogin}>Iniciar Sesión</Dropdown.Item>
         )}

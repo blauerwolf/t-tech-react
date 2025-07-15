@@ -48,14 +48,12 @@ export function crearUsuario(email, password) {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up
-        console.log("Credenciales", userCredential);
         const user = userCredential.user;
-        console.log(user);
         res(user);
         // ...
       })
       .catch((error) => {
-        console.log(error.code, error.message);
+        console.error(error.code, error.message);
         const errorCode = error.code;
         const errorMessage = error.message;
         rej(error);
@@ -95,13 +93,11 @@ export function loginEmailPass(email, password) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        console.log("Credenciales", userCredential);
         const user = userCredential.user;
-        console.log(user);
         res(user);
       })
       .catch((error) => {
-        console.log(error.code);
+        console.error(error.code);
         const errorCode = error.code;
         const errorMessage = error.message;
         rej(error);

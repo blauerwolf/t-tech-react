@@ -26,8 +26,6 @@ export const Productos = () => {
           lastDoc,
         });
 
-      console.log(productos)
-
       setProductos((prev) => [...prev, ...nuevosProductos]);
       setLastDoc(nuevoLastDoc);
 

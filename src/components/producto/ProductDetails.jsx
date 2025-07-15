@@ -12,8 +12,6 @@ export const ProductDetails = ({ product, onAddToCart }) => {
 
   if (!product) return <p>Producto no encontrado</p>;
 
-  console.log(product);
-
   const precioTotal = (cantidad * product.price).toFixed(2);
 
   const handleCantidadChange = (e) => {
