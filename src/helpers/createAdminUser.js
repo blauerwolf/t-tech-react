@@ -29,10 +29,25 @@ if (!password || password !== passwordRepeat) {
     const userRecord = await admin.auth().createUser({ email, password });
     console.log(`✅ Usuario creado con UID: ${userRecord.uid}`);
 
+    // Asignar el Custom Claim de administrador:
     await admin.auth().setCustomUserClaims(userRecord.uid, { admin: true });
     console.log(`✅ Rol admin asignado a ${email}`);
+
+    // Revocar los tokens de refresco para asegurar que el próximo login obtenga el token con los claims actualizados
+    // Esto es especialmente útil si se modifican claims de un usuario existente que ya está logueado.
+    // Para un usuario nuevo, asegura que desde el primer login el token sea correcto.
+    await admin.auth().revokeRefreshTokens(userRecord.uid);
+    console.log(`✅ Tokens de sesión revocados para el usuario ${userRecord.uid}.`);
+    console.log('✨ El usuario podrá iniciar sesión con su rol de administrador.');
+
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error('❌ Error al crear usuario o asignar rol:', error.message);
+    // Añadir manejo específico para errores comunes
+    if (error.code === 'auth/email-already-exists') {
+        console.error('Ya existe un usuario con este email.');
+    } else if (error.code === 'auth/invalid-password') {
+        console.error('La contraseña debe tener al menos 6 caracteres.');
+    }
     process.exit(1);
   }
 })();
