@@ -5,10 +5,11 @@ import { AuthProvider } from './providers/AuthContext'
 import './index.css'
 import App from './App.jsx'
 
+// el StrictMode me hace renderizar 2 veces el componente
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  //<StrictMode>
     <AuthProvider>
       <App />
     </AuthProvider>
-  </StrictMode>,
+  //</StrictMode>,
 )
