@@ -17,7 +17,6 @@ export const Productos = () => {
   const [total, setTotal] = useState(0);
 
   const loadProductos = async () => {
-    if (productos.length > 0) return;
     
     try {
       setCargando(true);
