@@ -12,6 +12,8 @@ import {
   query,
   orderBy,
   limit,
+  startAt,
+  endAt,
   startAfter,
   getCountFromServer,
 } from "firebase/firestore";
@@ -67,7 +69,6 @@ auth.useDeviceLanguage();
 export function logearG() {
   signInWithPopup(auth, provider)
     .then((result) => {
-      console.log("test", result);
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
@@ -111,13 +112,14 @@ export async function crearProducto(name, image, price, description, category, r
   try {
     const docRef = await addDoc(collection(db, "productos"), {
       name,
+      nameLower: name.toLowerCase(),
       image,
       price,
       description,
       category,
       rating
     });
-    console.log("Document written with ID: ", docRef.id);
+
     return docRef; // devolvemos directamente el docRef
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -166,7 +168,6 @@ export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
     }));
 
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
-    console.log(productos);
 
     return { productos, lastDoc: newLastDoc };
   } catch (error) {
@@ -220,6 +221,30 @@ export async function eliminarProducto(id) {
   } catch (err) {
     console.error("Error al eliminar el producto: ", err);
     throw err;  // lanzamos el error para manejarlo fuera
+  }
+}
+
+export async function buscarProductosPorNombre(termino) {
+  try {
+    const searchTermLower = termino.toLowerCase();
+
+    const productosRef = collection(db, 'productos');
+
+    const q = query(
+      productosRef,
+      orderBy('nameLower'),
+      startAt(searchTermLower),
+      endAt(searchTermLower + '\uf8ff')
+    );
+
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error("Error buscando productos:", error);
+    throw error;
   }
 }
 

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { Helmet } from "react-helmet";
-
 import ProductCard from "./ProductCard";
-import { fetchProductos } from "../../auth/firebase";
-
-import "../../styles/Productos.css";
+import { fetchProductos, buscarProductosPorNombre } from "../../auth/firebase";
 
 export const Productos = () => {
   const [productos, setProductos] = useState([]);
@@ -13,95 +10,96 @@ export const Productos = () => {
   const [error, setError] = useState(null);
   const [lastDoc, setLastDoc] = useState(null);
   const [hasMore, setHasMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [productosCarrito, setProductosCarrito] = useState([]);
-  const [total, setTotal] = useState(0);
+  // Cargo el primer lote de productos
+  useEffect(() => {
+    cargarProductos();
+  }, []);
 
-  const loadProductos = async () => {
+  const cargarProductos = async () => {
     try {
       setCargando(true);
-      const { productos: nuevosProductos, lastDoc: nuevoLastDoc } =
-        await fetchProductos({
-          pageSize: 10,
-          lastDoc,
-        });
-
-      setProductos((prev) => [...prev, ...nuevosProductos]);
+      const { productos: nuevosProductos, lastDoc: nuevoLastDoc } = await fetchProductos({
+        pageSize: 10,
+        lastDoc: null,
+      });
+      setProductos(nuevosProductos);
       setLastDoc(nuevoLastDoc);
-
-      // Si devolvió menos de 10, no quedan más
-      if (!nuevoLastDoc || nuevosProductos.length < 10) {
-        setHasMore(false);
-      }
+      setHasMore(!!nuevoLastDoc && nuevosProductos.length === 10);
     } catch (err) {
-      console.error("Error al cargar productos: ", err);
-      setError("Parece que no pudimos obtener los productos!");
+      setError("No pudimos obtener los productos.");
     } finally {
       setCargando(false);
     }
   };
 
-  // Cargo el primer lote al montar
-  useEffect(() => {
-    loadProductos();
-  }, []);
+  const handleBuscar = async (e) => {
+    const valor = e.target.value;
+    setSearchTerm(valor);
 
-  //if (cargando) {
-  if (cargando && productos.length === 0) {
-    return (
-      <Container className="productos-container text-center my-3">
-        <h2 className="productos-title mb-3">Cargando productos...</h2>
-        <Spinner
-          animation="border"
-          role="status"
-          variant="secondary"
-          className="spinner-icon"
-        >
-          <span className="visually-hidden">Cargando...</span>
-        </Spinner>
-      </Container>
-    );
-  }
+    if (valor.trim() === "") {
+      // Si el input se borra, recargo todos
+      cargarProductos();
+      return;
+    }
 
-  if (error) {
-    return (
-      <Container className="productos-container text-center my-3">
-        <p>{error}</p>
-      </Container>
-    );
-  }
-
-  const nombreApp = import.meta.env.VITE_NOMBRE_APP
+    try {
+      setCargando(true);
+      const productosEncontrados = await buscarProductosPorNombre(valor.trim().toLowerCase());
+      setProductos(productosEncontrados);
+      setHasMore(false); // ocultamos el botón de cargar más
+    } catch (err) {
+      console.error("Error buscando productos:", err);
+      setError("Error buscando productos.");
+    } finally {
+      setCargando(false);
+    }
+  };
 
   return (
     <>
       <Helmet>
-        <title>Productos - {nombreApp}</title>
+        <title>Productos</title>
       </Helmet>
-      
+
       <Container className="productos-container my-5">
         <h2 className="productos-title text-center mb-4">Nuestros Productos</h2>
-        <Row className="productos-grid g-4">
-          {productos.map((producto) => (
-            <Col key={producto.id} xs={12} sm={6} md={4} lg={3}>
-              <ProductCard
-                id={producto.id}
-                image={producto.image}
-                name={producto.name}
-                price={producto.price}
-              />
-            </Col>
-          ))}
-        </Row>
 
-        {hasMore && (
+        <Form className="mb-4">
+          <Form.Control
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={searchTerm}
+            onChange={handleBuscar}
+          />
+        </Form>
+
+        {cargando && productos.length === 0 ? (
+          <div className="text-center">
+            <Spinner animation="border" variant="secondary" />
+          </div>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <Row className="productos-grid g-4">
+            {productos.map((producto) => (
+              <Col key={producto.id} xs={12} sm={6} md={4} lg={3}>
+                <ProductCard
+                  id={producto.id}
+                  image={producto.image}
+                  name={producto.name}
+                  price={producto.price}
+                />
+              </Col>
+            ))}
+          </Row>
+        )}
+
+        {hasMore && !cargando && (
           <div className="text-center mt-4">
-            <button
-              className="card-button"
-              onClick={loadProductos}
-              disabled={cargando}
-            >
-              {cargando ? "Cargando..." : "Cargar más"}
+            <button className="card-button" onClick={cargarProductos}>
+              Cargar más
             </button>
           </div>
         )}
