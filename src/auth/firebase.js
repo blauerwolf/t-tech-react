@@ -1,13 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { 
-  getFirestore, 
-  collection, 
-  doc, 
-  addDoc, 
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
   getDoc,
-  getDocs, 
-  updateDoc, 
+  getDocs,
+  updateDoc,
   deleteDoc,
   query,
   orderBy,
@@ -25,7 +25,6 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -107,17 +106,23 @@ export function loginEmailPass(email, password) {
   });
 }
 
-
-export async function crearProducto(name, image, price, description, category, rating) {
+export async function crearProducto(
+  name,
+  image,
+  price,
+  description,
+  category,
+  rating
+) {
   try {
     const docRef = await addDoc(collection(db, "productos"), {
       name,
-      nameLower: name.toLowerCase(),    // Lo uso en las búsquedas
+      nameLower: name.toLowerCase(), // Lo uso en las búsquedas
       image,
       price,
       description,
       category,
-      rating
+      rating,
     });
 
     return docRef; // devolvemos directamente el docRef
@@ -127,12 +132,11 @@ export async function crearProducto(name, image, price, description, category, r
   }
 }
 
-
 export async function obtenerProductos() {
   try {
     const querySnapshot = await getDocs(collection(db, "productos"));
 
-    return querySnapshot.docs.map(doc => ({
+    return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
@@ -162,9 +166,9 @@ export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
 
     const snapshot = await getDocs(q);
 
-    const productos = snapshot.docs.map(doc => ({
+    const productos = snapshot.docs.map((doc) => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     }));
 
     const newLastDoc = snapshot.docs[snapshot.docs.length - 1];
@@ -175,7 +179,6 @@ export async function fetchProductos({ pageSize = 10, lastDoc = null }) {
     throw error;
   }
 }
-
 
 export async function obtenerProductoPorId(id) {
   try {
@@ -195,10 +198,10 @@ export async function obtenerProductoPorId(id) {
 
 export async function obtenerCantidadProductos() {
   try {
-    const snapshot = await getCountFromServer(collection(db, 'productos'));
-    return snapshot.data().count;  // devuelve el número total
+    const snapshot = await getCountFromServer(collection(db, "productos"));
+    return snapshot.data().count; // devuelve el número total
   } catch (error) {
-    console.error('Error al contar productos:', error);
+    console.error("Error al contar productos:", error);
     throw error;
   }
 }
@@ -217,10 +220,10 @@ export async function actualizarProducto(id, data) {
 export async function eliminarProducto(id) {
   try {
     await deleteDoc(doc(db, "productos", id));
-    return id;  // devolvemos el id eliminado
+    return id; // devolvemos el id eliminado
   } catch (err) {
     console.error("Error al eliminar el producto: ", err);
-    throw err;  // lanzamos el error para manejarlo fuera
+    throw err; // lanzamos el error para manejarlo fuera
   }
 }
 
@@ -228,25 +231,24 @@ export async function buscarProductosPorNombre(termino) {
   try {
     const searchTermLower = termino.toLowerCase();
 
-    const productosRef = collection(db, 'productos');
+    const productosRef = collection(db, "productos");
 
     const q = query(
       productosRef,
-      orderBy('nameLower'),
+      orderBy("nameLower"),
       startAt(searchTermLower),
-      endAt(searchTermLower + '\uf8ff')
+      endAt(searchTermLower + "\uf8ff")
     );
 
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({
+    return snapshot.docs.map((doc) => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     }));
   } catch (error) {
     console.error("Error buscando productos:", error);
     throw error;
   }
 }
-
 
 export { auth, db };
