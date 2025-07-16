@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-
 import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../../auth/firebase'; 
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const AdminProductForm = () => {
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState({
     name: '',
     price: '',
@@ -17,8 +21,7 @@ export const AdminProductForm = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,11 +44,9 @@ export const AdminProductForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setSuccess(false);
+
 
     try {
-      // Convertir price, rate y count a números
       const newProduct = {
         ...product,
         price: parseFloat(product.price),
@@ -55,30 +56,26 @@ export const AdminProductForm = () => {
         }
       };
 
-      // Validar que los campos numéricos son números válidos
       if (isNaN(newProduct.price) || isNaN(newProduct.rating.rate) || isNaN(newProduct.rating.count)) {
         throw new Error('El precio, la calificación (rate) y el conteo (count) deben ser números válidos.');
       }
 
-      // Añadir el documento a la colección 'products' en Firestore
-      const docRef = await addDoc(collection(db, 'products'), newProduct);
+      const docRef = await addDoc(collection(db, 'productos'), newProduct);
       console.log('Documento escrito con ID: ', docRef.id);
-      setSuccess(true);
-      // Limpiar el formulario después de la carga exitosa
+      toast.success('Producto cargado exitosamente.');
+
+      // Limpia el formulario
       setProduct({
         name: '',
         price: '',
         description: '',
         category: '',
         image: '',
-        rating: {
-          rate: '',
-          count: ''
-        }
+        rating: { rate: '', count: '' }
       });
     } catch (err) {
       console.error('Error al añadir el documento: ', err);
-      setError(err.message || 'Error al guardar el producto. Por favor, inténtalo de nuevo.');
+      toast.error(err.message || 'Error al guardar el producto. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -87,10 +84,6 @@ export const AdminProductForm = () => {
   return (
     <Container className="my-5">
       <h2 className="mb-4 text-center">Cargar Nuevo Producto</h2>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">Producto cargado exitosamente. ID: {success}</Alert>}
-
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formProductName">
@@ -177,7 +170,7 @@ export const AdminProductForm = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Label>&nbsp;</Form.Label> {/* Espacio para alinear labels */}
+            <Form.Label>&nbsp;</Form.Label>
             <Form.Group controlId="formProductCount">
               <Form.Label className="product-name">Cantidad (Número de reviews)</Form.Label>
               <Form.Control
@@ -193,9 +186,16 @@ export const AdminProductForm = () => {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit" disabled={loading} className="product-button">
-          {loading ? 'Cargando...' : 'Añadir Producto'}
-        </Button>
+        <div className="d-flex">
+          <Button variant="secondary" className="mx-2" onClick={() => navigate(-1)}>
+            Volver
+          </Button>
+
+          <Button variant="primary" type="submit" disabled={loading} className="product-button">
+            {loading ? 'Cargando...' : 'Añadir Producto'}
+          </Button>
+          
+        </div>
       </Form>
     </Container>
   );

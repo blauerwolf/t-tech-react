@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Container, Button, Table, Image} from 'react-bootstrap';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
-import { obtenerProductos } from '../../auth/firebase';
+import { eliminarProducto, obtenerProductos } from '../../auth/firebase';
+import { dispararSweet } from "../../helpers/SweetAlert";
 
 
 
@@ -19,7 +21,6 @@ export const AdminProducts = () => {
     try {
       setLoading(true);
       const productos = await obtenerProductos();
-      console.log(productos)
       setProducts(productos);
 
     } catch (err) {
@@ -36,12 +37,28 @@ export const AdminProducts = () => {
   };
 
   const handleEdit = (id) => {
-    console.log(id);
     navigate(`/admin/productos/editar/${id}`);
   };
 
-  const handleDelete = (id) => {
-    console.log('Eliminar producto', id);
+  const handleDelete = async (id) => {
+
+    try {
+      const resultado = await dispararSweet(
+        'Eliminar producto',
+        `Estás a punto de eliminar el producto <strong>#${id}</strong><br />Esta acción no se puede deshacer.<br />¿Querés continuar?`,
+      );
+
+      if (resultado.isConfirmed) {
+        await eliminarProducto(id);
+        toast.success('Producto eliminado correctamente.');
+
+        // Recargo los productos
+        loadProductos();
+      }
+    } catch (err) {
+      console.error('Error al eliminar producto: ', err);
+      toast.error('Error al eliminar el producto.');
+    }
   };
 
   useEffect(() => {

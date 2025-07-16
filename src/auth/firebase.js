@@ -233,4 +233,4 @@ export async function eliminarProducto(id) {
 }
 
 
-export { auth };
+export { auth, db };

@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Container, Row, Col, Alert, Spinner } from 'react-bootstrap';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import {
+  Form,
+  Button,
+  Container,
+  Row,
+  Col,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { obtenerProductoPorId, actualizarProducto } from '../../auth/firebase';
+import { obtenerProductoPorId, actualizarProducto } from "../../auth/firebase";
 
 export const AdminEditProductForm = () => {
   const { id } = useParams(); // asumimos que la ruta es /admin/productos/:id
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
-    name: '',
-    price: '',
-    description: '',
-    category: '',
-    image: '',
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    image: "",
     rating: {
-      rate: '',
-      count: ''
-    }
+      rate: "",
+      count: "",
+    },
   });
   const [loading, setLoading] = useState(true); // empieza true porque cargamos datos
   const [saving, setSaving] = useState(false);
@@ -31,15 +39,15 @@ export const AdminEditProductForm = () => {
         const data = await obtenerProductoPorId(id);
         setProduct({
           ...data,
-          price: data.price ?? '',
+          price: data.price ?? "",
           rating: {
-            rate: data.rating?.rate ?? '',
-            count: data.rating?.count ?? ''
-          }
+            rate: data.rating?.rate ?? "",
+            count: data.rating?.count ?? "",
+          },
         });
       } catch (err) {
-        console.error('Error al obtener el producto:', err);
-        setError('No se pudo cargar el producto.');
+        console.error("Error al obtener el producto:", err);
+        setError("No se pudo cargar el producto.");
       } finally {
         setLoading(false);
       }
@@ -49,18 +57,18 @@ export const AdminEditProductForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'rate' || name === 'count') {
-      setProduct(prev => ({
+    if (name === "rate" || name === "count") {
+      setProduct((prev) => ({
         ...prev,
         rating: {
           ...prev.rating,
-          [name]: value
-        }
+          [name]: value,
+        },
       }));
     } else {
-      setProduct(prev => ({
+      setProduct((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -77,8 +85,8 @@ export const AdminEditProductForm = () => {
         price: parseFloat(product.price),
         rating: {
           rate: parseFloat(product.rating.rate),
-          count: parseInt(product.rating.count, 10)
-        }
+          count: parseInt(product.rating.count, 10),
+        },
       };
 
       if (
@@ -86,7 +94,7 @@ export const AdminEditProductForm = () => {
         isNaN(updatedProduct.rating.rate) ||
         isNaN(updatedProduct.rating.count)
       ) {
-        throw new Error('El precio, rate y count deben ser números válidos.');
+        throw new Error("El precio, rate y count deben ser números válidos.");
       }
 
       await actualizarProducto(id, updatedProduct);
@@ -94,8 +102,8 @@ export const AdminEditProductForm = () => {
       // opcional: navegar a listado después de editar
       // navigate('/admin/productos');
     } catch (err) {
-      console.error('Error al actualizar el producto:', err);
-      setError(err.message || 'Error al guardar los cambios.');
+      console.error("Error al actualizar el producto:", err);
+      setError(err.message || "Error al guardar los cambios.");
     } finally {
       setSaving(false);
     }
@@ -115,12 +123,16 @@ export const AdminEditProductForm = () => {
       <h2 className="mb-4 text-center">Editar Producto</h2>
 
       {error && <Alert variant="danger">{error}</Alert>}
-      {success && <Alert variant="success">¡Producto actualizado correctamente!</Alert>}
+      {success && (
+        <Alert variant="success">¡Producto actualizado correctamente!</Alert>
+      )}
 
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formProductName">
-            <Form.Label className="product-name">Nombre del Producto</Form.Label>
+            <Form.Label className="product-name">
+              Nombre del Producto
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -181,7 +193,9 @@ export const AdminEditProductForm = () => {
 
         <Row className="mb-3">
           <Col>
-            <Form.Label className="product-name">Calificación (Rate)</Form.Label>
+            <Form.Label className="product-name">
+              Calificación (Rate)
+            </Form.Label>
             <Form.Control
               type="number"
               step="0.1"
@@ -194,7 +208,9 @@ export const AdminEditProductForm = () => {
             />
           </Col>
           <Col>
-            <Form.Label className="product-name">Cantidad (Número de reviews)</Form.Label>
+            <Form.Label className="product-name">
+              Cantidad (Número de reviews)
+            </Form.Label>
             <Form.Control
               type="number"
               min="0"
@@ -205,10 +221,23 @@ export const AdminEditProductForm = () => {
             />
           </Col>
         </Row>
-
-        <Button variant="primary" type="submit" disabled={saving} className="product-button">
-          {saving ? 'Guardando...' : 'Guardar Cambios'}
-        </Button>
+        <div className="d-flex">
+          <Button
+            variant="secondary"
+            className="mx-2"
+            onClick={() => navigate(-1)}
+          >
+            Volver
+          </Button>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={saving}
+            className="product-button"
+          >
+            {saving ? "Guardando..." : "Guardar Cambios"}
+          </Button>
+        </div>
       </Form>
     </Container>
   );
