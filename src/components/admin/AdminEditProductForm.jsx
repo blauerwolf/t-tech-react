@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {
-  Form,
-  Button,
-  Container,
-  Row,
-  Col,
-  Alert,
-  Spinner,
-} from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 
 import { obtenerProductoPorId, actualizarProducto } from "../../auth/firebase";
 
@@ -29,8 +22,6 @@ export const AdminEditProductForm = () => {
   });
   const [loading, setLoading] = useState(true); // empieza true porque cargamos datos
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
 
   // Cargar datos del producto
   useEffect(() => {
@@ -47,11 +38,12 @@ export const AdminEditProductForm = () => {
         });
       } catch (err) {
         console.error("Error al obtener el producto:", err);
-        setError("No se pudo cargar el producto.");
+        toast.error("No se puedo actualizar el producto");
       } finally {
         setLoading(false);
       }
     }
+
     fetchProduct();
   }, [id]);
 
@@ -75,9 +67,25 @@ export const AdminEditProductForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Validaciones antes de enviar
+    if (!product.name.trim()) {
+      toast.error("El nombre del producto es obligatorio");
+      return;
+    }
+
+    const price = parseFloat(product.price);
+    if (isNaN(price) || price <= 0) {
+      toast.error("El precio debe ser un número mayor a 0");
+      return;
+    }
+
+    if (product.description.trim().length < 10) {
+      toast.error("La descripción debe tener al menos 10 caracteres");
+      return;
+    }
+
     setSaving(true);
-    setError(null);
-    setSuccess(false);
 
     try {
       const updatedProduct = {
@@ -98,12 +106,12 @@ export const AdminEditProductForm = () => {
       }
 
       await actualizarProducto(id, updatedProduct);
-      setSuccess(true);
-      // opcional: navegar a listado después de editar
-      // navigate('/admin/productos');
+      toast.success(`Producto #${id} actualizado exitosamente.`);
     } catch (err) {
       console.error("Error al actualizar el producto:", err);
-      setError(err.message || "Error al guardar los cambios.");
+      toast.error(
+        err.message || "Error al guardar el producto. Inténtalo de nuevo."
+      );
     } finally {
       setSaving(false);
     }
@@ -121,11 +129,6 @@ export const AdminEditProductForm = () => {
   return (
     <Container className="my-5">
       <h2 className="mb-4 text-center">Editar Producto</h2>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-      {success && (
-        <Alert variant="success">¡Producto actualizado correctamente!</Alert>
-      )}
 
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
@@ -208,9 +211,7 @@ export const AdminEditProductForm = () => {
             />
           </Col>
           <Col>
-            <Form.Label className="product-name">
-              Cantidad (Número de reviews)
-            </Form.Label>
+            <Form.Label className="product-name">Stock</Form.Label>
             <Form.Control
               type="number"
               min="0"

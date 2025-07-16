@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../auth/firebase'; 
 import { useNavigate } from 'react-router-dom';
@@ -22,49 +22,58 @@ export const AdminProductForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'rate' || name === 'count') {
-      setProduct(prevProduct => ({
-        ...prevProduct,
-        rating: {
-          ...prevProduct.rating,
-          [name]: value
-        }
+      setProduct(prev => ({
+        ...prev,
+        rating: { ...prev.rating, [name]: value }
       }));
     } else {
-      setProduct(prevProduct => ({
-        ...prevProduct,
-        [name]: value
-      }));
+      setProduct(prev => ({ ...prev, [name]: value }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // ✅ Validaciones antes de enviar
+    if (!product.name.trim()) {
+      toast.error('El nombre del producto es obligatorio');
+      return;
+    }
+
+    const price = parseFloat(product.price);
+    if (isNaN(price) || price <= 0) {
+      toast.error('El precio debe ser un número mayor a 0');
+      return;
+    }
+
+    if (product.description.trim().length < 10) {
+      toast.error('La descripción debe tener al menos 10 caracteres');
+      return;
+    }
+
     setLoading(true);
-
-
     try {
       const newProduct = {
         ...product,
-        price: parseFloat(product.price),
+        price,
         rating: {
           rate: parseFloat(product.rating.rate),
           count: parseInt(product.rating.count, 10)
         }
       };
 
-      if (isNaN(newProduct.price) || isNaN(newProduct.rating.rate) || isNaN(newProduct.rating.count)) {
-        throw new Error('El precio, la calificación (rate) y el conteo (count) deben ser números válidos.');
+      // Verificar que los campos de rating también sean válidos
+      if (isNaN(newProduct.rating.rate) || isNaN(newProduct.rating.count)) {
+        throw new Error('La calificación (rate) y el conteo (count) deben ser números válidos.');
       }
 
       const docRef = await addDoc(collection(db, 'productos'), newProduct);
-      console.log('Documento escrito con ID: ', docRef.id);
-      toast.success('Producto cargado exitosamente.');
+      toast.success(<span>Producto <b>#{docRef.id}</b> cargado exitosamente.</span>);
 
-      // Limpia el formulario
+      // Limpiar el formulario
       setProduct({
         name: '',
         price: '',
@@ -84,6 +93,7 @@ export const AdminProductForm = () => {
   return (
     <Container className="my-5">
       <h2 className="mb-4 text-center">Cargar Nuevo Producto</h2>
+
       <Form onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formProductName">
@@ -144,6 +154,7 @@ export const AdminProductForm = () => {
               type="url"
               placeholder="Ej: https://ejemplo.com/imagen.jpg"
               name="image"
+              minLength={10}
               value={product.image}
               onChange={handleChange}
               required
@@ -172,7 +183,7 @@ export const AdminProductForm = () => {
           <Col>
             <Form.Label>&nbsp;</Form.Label>
             <Form.Group controlId="formProductCount">
-              <Form.Label className="product-name">Cantidad (Número de reviews)</Form.Label>
+              <Form.Label className="product-name">Stock</Form.Label>
               <Form.Control
                 type="number"
                 min="0"
@@ -194,7 +205,6 @@ export const AdminProductForm = () => {
           <Button variant="primary" type="submit" disabled={loading} className="product-button">
             {loading ? 'Cargando...' : 'Añadir Producto'}
           </Button>
-          
         </div>
       </Form>
     </Container>
