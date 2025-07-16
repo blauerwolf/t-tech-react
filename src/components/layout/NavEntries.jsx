@@ -4,11 +4,17 @@ import { NavLink } from 'react-router-dom'
 import { FaShoppingCart } from "react-icons/fa";
 import { Nav } from 'react-bootstrap';
 
-import "../../styles/Header.css"
 import { UserMenu } from './UserMenu'
+import { useCart } from '../../contexts/CartContext';
+
+import "../../styles/Header.css"
 
 
 export const NavEntries = () => {
+  const { carrito } = useCart();
+
+  const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+
   return (
     <Nav className="nav ms-auto">
       <ul className="nav-list main-menu">
@@ -29,6 +35,9 @@ export const NavEntries = () => {
         <li className="nav-item">
             <NavLink to="/carrito" className={({ isActive }) => isActive ? "nav-link active cart-icon" : "nav-link cart-icon" }>
               <FaShoppingCart />
+              {totalCantidad > 0 && (
+                <span className="cart-count">{totalCantidad}</span>
+              )}
             </NavLink>
         </li>
       </ul>

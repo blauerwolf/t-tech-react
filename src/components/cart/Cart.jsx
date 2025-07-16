@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { FaTrashAlt } from "react-icons/fa";
+import { toast } from 'react-toastify';
+
+import { GenericCard } from '../layout'
+import { useCart } from '../../contexts/CartContext';
 
 import "../../styles/Cart.css";
-import { GenericCard } from '../layout'
 
 export const Cart = ({ userName }) => {
-  const [carrito, setCarrito] = useState([]);
+  //const [carrito, setCarrito] = useState([]);
+  const { carrito, setCarrito } = useCart();
   const MySwal = withReactContent(Swal);
 
   useEffect(() => {
@@ -48,7 +52,7 @@ export const Cart = ({ userName }) => {
 
     MySwal.fire({
       title: '¡Atención!',
-      text: `¿Querés eliminar del carrito`,
+      text: `¿Querés eliminar el producto del carrito?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
@@ -59,13 +63,7 @@ export const Cart = ({ userName }) => {
       if (result.isConfirmed) {
         const nuevoCarrito = carrito.filter((item) => item.id !== id);
         guardarCarrito(nuevoCarrito);
-        MySwal.fire({
-          title: '¡Producto eliminado!',
-          text: 'El producto ha sido eliminado del carrito.',
-          icon: 'success',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#4b342c',
-        });
+        toast.success('El producto ha sido eliminado del carrito.');
       }
     })
   };

@@ -14,7 +14,7 @@ export const UserCart = () => {
         )
     }
   return (
-    <div className="cart-container">
+    <div className="cart-container mt-5">
         <Cart userName={userName} />
     </div>
   )

@@ -25,18 +25,18 @@ import {
 } from "./components";
 
 import { useAuth } from "./providers/AuthContext";
-
-// TODO: Importar el Admin Dashboard y Admin Products
+import { CartProvider } from './contexts/CartContext';
 
 import "./styles/App.css";
 
 function App() {
   const [count, setCount] = useState(0);
-  const { isAuthenticated, isAdmin } = useAuth();
+  const { isAuthenticated, isAdmin, userName } = useAuth();
 
   return (
     <Router>
-      <div className="app-container">
+      <CartProvider userName={userName}>
+        <div className="app-container">
         <TopBar />
 
         <main className="main-content">
@@ -92,6 +92,7 @@ function App() {
         </main>
         <Footer />
       </div>
+      </CartProvider>
     </Router>
   );
 }

@@ -11,8 +11,8 @@ export function dispararSweetBasico(titulo, text, icon, textoBoton) {
 
 export async function dispararSweet(
   title, text, icon = 'warning', showCancelButton = true, 
-  confirmButtonColor = '#d33', cancelButtonColor = '#3085d6', 
-  confirmButtonText = 'Confirmar', cancelButtonText = 'Cancelar'
+  confirmButtonColor = '#4b342c', cancelButtonColor = '#000000', 
+  confirmButtonText = 'Aceptar', cancelButtonText = 'Cancelar'
 ) {
   const result = await Swal.fire({
     title: title,

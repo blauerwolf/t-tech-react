@@ -1,14 +1,21 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
+import { useAuth } from "../../providers/AuthContext";
+import { dispararSweet } from "../../helpers";
+
 import "../../styles/ProductDetails.css";
 
 export const ProductDetails = ({ product, onAddToCart }) => {
   const [cantidad, setCantidad] = useState(1);
+
   const MySwal = withReactContent(Swal);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   if (!product) return <p>Producto no encontrado</p>;
 
@@ -18,15 +25,29 @@ export const ProductDetails = ({ product, onAddToCart }) => {
     setCantidad(Number(e.target.value));
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    if (!isAuthenticated) {
+      const result = await dispararSweet(
+        '¡Necesitas iniciar sesión!',
+        'Para agregar productos al carrito, por favor inicia sesión.',
+        'warning',
+      );
+
+      if (result.isConfirmed) {
+        navigate('/login');
+      }
+
+      return;
+    }
+
     onAddToCart({ ...product, cantidad });
-    MySwal.fire({
-      title: '¡Producto agregado!',
-      text: `Agregaste ${product.name}`,
-      icon: 'success',
-      confirmButtonText: 'Aceptar',
-      confirmButtonColor: '#4b342c',
-    });
+
+    dispararSweet(
+      '¡Producto agregado!',
+      `Agregaste ${product.name}`,
+      'success',
+      false,
+    )
   };
 
   return (

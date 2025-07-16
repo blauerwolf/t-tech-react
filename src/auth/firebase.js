@@ -12,7 +12,8 @@ import {
   query,
   orderBy,
   limit,
-  startAfter 
+  startAfter,
+  getCountFromServer,
 } from "firebase/firestore";
 
 import {
@@ -106,26 +107,6 @@ export function loginEmailPass(email, password) {
 }
 
 
-/*
-export function crearProducto(name, image, price, description) {
-  return new Promise(async (res, rej) => {
-    try {
-      const docRef = await addDoc(collection(db, "productos"), {
-        name: name,
-        image: image,
-        price: price,
-        description: description,
-      });
-
-      console.log("Document written with ID: ", docRef.id);
-      res(docRef);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      rej(e);
-    }
-  });
-}
-*/
 export async function crearProducto(name, image, price, description, category, rating) {
   try {
     const docRef = await addDoc(collection(db, "productos"), {
@@ -207,6 +188,16 @@ export async function obtenerProductoPorId(id) {
     }
   } catch (error) {
     console.error("Error al obtener el producto por id:", error);
+    throw error;
+  }
+}
+
+export async function obtenerCantidadProductos() {
+  try {
+    const snapshot = await getCountFromServer(collection(db, 'productos'));
+    return snapshot.data().count;  // devuelve el número total
+  } catch (error) {
+    console.error('Error al contar productos:', error);
     throw error;
   }
 }
