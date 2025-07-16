@@ -50,3 +50,6 @@ npm run build
 ## Panel de administrador versión online
 Usuario: admin@galashop.com
 Password: 0303456
+
+### Limitaciones conocidas
+Los términos de búsqueda son identificados en firestore si la palabra es la del comienzo del nombre del producto.

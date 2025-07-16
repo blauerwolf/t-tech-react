@@ -112,7 +112,7 @@ export async function crearProducto(name, image, price, description, category, r
   try {
     const docRef = await addDoc(collection(db, "productos"), {
       name,
-      nameLower: name.toLowerCase(),
+      nameLower: name.toLowerCase(),    // Lo uso en las búsquedas
       image,
       price,
       description,
@@ -207,7 +207,7 @@ export async function actualizarProducto(id, data) {
   try {
     const productRef = doc(db, "productos", id);
     await updateDoc(productRef, data);
-    return true; // devolvemos true para indicar éxito (opcional)
+    return true;
   } catch (err) {
     console.error("Error al actualizar el producto: ", err);
     throw err;
