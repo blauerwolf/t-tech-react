@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 // Creamos el contexto
 const CartContext = createContext();
@@ -34,8 +34,16 @@ export const CartProvider = ({ userName, children }) => {
     }
   };
 
+  const vaciarCarrito = () => {
+    setCarrito([]);
+    const userName = localStorage.getItem("userName");
+    if (userName) {
+      localStorage.removeItem(`cart_${userName}`);
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ carrito, setCarrito: guardarCarrito }}>
+    <CartContext.Provider value={{ carrito, setCarrito: guardarCarrito, vaciarCarrito }}>
       {children}
     </CartContext.Provider>
   );

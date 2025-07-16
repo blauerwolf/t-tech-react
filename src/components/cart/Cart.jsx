@@ -1,106 +1,98 @@
-import React, { useEffect, useState } from "react";
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import React from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { FaTrashAlt } from "react-icons/fa";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import { Button } from "react-bootstrap";
 
-import { GenericCard } from '../layout'
-import { useCart } from '../../contexts/CartContext';
+import { useCart } from "../../contexts/CartContext";
+import { GenericCard } from "../layout";
 
 import "../../styles/Cart.css";
 
 export const Cart = ({ userName }) => {
-  //const [carrito, setCarrito] = useState([]);
-  const { carrito, setCarrito } = useCart();
   const MySwal = withReactContent(Swal);
-
-  useEffect(() => {
-    if (!userName) return;
-
-    const data = localStorage.getItem(`cart_${userName}`);
-    if (data) {
-      try {
-        setCarrito(JSON.parse(data));
-      } catch (e) {
-        console.error("Error al leer el carrito:", e);
-      }
-    }
-  }, [userName]);
-
-  const guardarCarrito = (nuevoCarrito) => {
-    setCarrito(nuevoCarrito);
-    localStorage.setItem(`cart_${userName}`, JSON.stringify(nuevoCarrito));
-  };
-
-  const aumentarCantidad = (id) => {
-    const nuevoCarrito = carrito.map((item) =>
-      item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
-    );
-    guardarCarrito(nuevoCarrito);
-  };
-
-  const disminuirCantidad = (id) => {
-    const nuevoCarrito = carrito.map((item) =>
-      item.id === id
-        ? { ...item, cantidad: item.cantidad > 1 ? item.cantidad - 1 : 1 }
-        : item
-    );
-    guardarCarrito(nuevoCarrito);
-  };
+  const { carrito, setCarrito, vaciarCarrito } = useCart();
 
   const eliminarProducto = (id) => {
-
     MySwal.fire({
-      title: '¡Atención!',
+      title: "¡Atención!",
       text: `¿Querés eliminar el producto del carrito?`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      confirmButtonColor: '#4b342c',
-      cancelButtonText: 'Cancelar',
-      cancelButtonColor: '#d33',
-    }).then(result => {
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#4b342c",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
       if (result.isConfirmed) {
         const nuevoCarrito = carrito.filter((item) => item.id !== id);
-        guardarCarrito(nuevoCarrito);
-        toast.success('El producto ha sido eliminado del carrito.');
+        setCarrito(nuevoCarrito);
+        if (userName) {
+          localStorage.setItem(
+            `cart_${userName}`,
+            JSON.stringify(nuevoCarrito)
+          );
+        }
+        toast.success("El producto ha sido eliminado del carrito.");
       }
-    })
+    });
   };
 
-  const vaciarCarrito = () => {
-    const confirmar = window.confirm(
-      "¿Estás seguro de que quieres vaciar el carrito?"
-    );
-    if (confirmar) {
-      setCarrito([]);
-      localStorage.removeItem(`cart_${userName}`);
-    }
+  const handleVaciarCarrito = () => {
+    MySwal.fire({
+      title: "¿Vaciar carrito?",
+      text: "Esta acción eliminará todos los productos de tu carrito.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, vaciar",
+      confirmButtonColor: "#4b342c",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        vaciarCarrito();
+        toast.success("Carrito vaciado correctamente.");
+      }
+    });
+  };
+
+  const handlePagar = () => {
+    MySwal.fire({
+      title: "¡Gracias por tu compra!",
+      text: "Pronto recibirás un correo de confirmación.",
+      icon: "success",
+      confirmButtonText: "Aceptar",
+      confirmButtonColor: "#4b342c",
+    });
   };
 
   const calcularTotal = () => {
-    return carrito.reduce(
-      (total, item) => total + item.price * item.cantidad,
-      0
-    );
+    return carrito
+      .reduce((total, item) => total + item.price * item.cantidad, 0)
+      .toFixed(2);
   };
 
   if (!userName) {
-    return (<GenericCard 
-        titulo={"Error"}    
+    return (
+      <GenericCard
+        titulo={"Error"}
         bajada={"¡Debes estar logueado para acceder a tu carrito!"}
         textoBoton={"Iniciar Sesión"}
-        destino={'/login'}
-    />);
+        destino={"/login"}
+      />
+    );
   }
 
   if (carrito.length === 0) {
-    return (<GenericCard 
+    return (
+      <GenericCard
         titulo={"¡No hay productos en tu carrito!"}
         bajada={"¡Lo que estás buscando se encuentra en nuestro catálogo"}
         textoBoton={"Ver productos"}
-        destino={'/productos'}
-    />);
+        destino={"/productos"}
+      />
+    );
   }
 
   return (
@@ -127,6 +119,15 @@ export const Cart = ({ userName }) => {
       ))}
       <div className="cart-total">
         <h3>Total: ${calcularTotal()}</h3>
+        <div className="d-flex mt-3">
+          <Button variant="secondary" onClick={handleVaciarCarrito}>
+            Vaciar carrito
+          </Button>
+
+          <Button variant="primary" className="ms-3" onClick={handlePagar}>
+            Pagar
+          </Button>
+        </div>
       </div>
     </div>
   );

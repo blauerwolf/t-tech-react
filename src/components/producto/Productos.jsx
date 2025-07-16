@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-import ProductCard from "./ProductCard";
+import { Helmet } from "react-helmet";
 
+import ProductCard from "./ProductCard";
 import { fetchProductos } from "../../auth/firebase";
 
 import "../../styles/Productos.css";
@@ -17,7 +18,6 @@ export const Productos = () => {
   const [total, setTotal] = useState(0);
 
   const loadProductos = async () => {
-    
     try {
       setCargando(true);
       const { productos: nuevosProductos, lastDoc: nuevoLastDoc } =
@@ -46,7 +46,6 @@ export const Productos = () => {
     loadProductos();
   }, []);
 
-
   //if (cargando) {
   if (cargando && productos.length === 0) {
     return (
@@ -72,34 +71,42 @@ export const Productos = () => {
     );
   }
 
-  return (
-    <Container className="productos-container my-5">
-      <h2 className="productos-title text-center mb-4">Nuestros Productos</h2>
-      <Row className="productos-grid g-4">
-        {productos.map((producto) => (
-          <Col key={producto.id} xs={12} sm={6} md={4} lg={3}>
-            <ProductCard
-              id={producto.id}
-              image={producto.image}
-              name={producto.name}
-              price={producto.price}
-            />
-          </Col>
-        ))}
-      </Row>
+  const nombreApp = import.meta.env.VITE_NOMBRE_APP
 
-      {hasMore && (
-        <div className="text-center mt-4">
-          <button
-            className="card-button"
-            onClick={loadProductos}
-            disabled={cargando}
-          >
-            {cargando ? "Cargando..." : "Cargar más"}
-          </button>
-        </div>
-      )}
-    </Container>
+  return (
+    <>
+      <Helmet>
+        <title>Productos - {nombreApp}</title>
+      </Helmet>
+      
+      <Container className="productos-container my-5">
+        <h2 className="productos-title text-center mb-4">Nuestros Productos</h2>
+        <Row className="productos-grid g-4">
+          {productos.map((producto) => (
+            <Col key={producto.id} xs={12} sm={6} md={4} lg={3}>
+              <ProductCard
+                id={producto.id}
+                image={producto.image}
+                name={producto.name}
+                price={producto.price}
+              />
+            </Col>
+          ))}
+        </Row>
+
+        {hasMore && (
+          <div className="text-center mt-4">
+            <button
+              className="card-button"
+              onClick={loadProductos}
+              disabled={cargando}
+            >
+              {cargando ? "Cargando..." : "Cargar más"}
+            </button>
+          </div>
+        )}
+      </Container>
+    </>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Helmet } from "react-helmet";
+
 import ProductDetails from "./ProductDetails";
 import { useAuth } from "../../providers/AuthContext";
-
 import { obtenerProductoPorId } from "../../auth/firebase";
 import { useCart } from "../../contexts/CartContext";
 
@@ -48,32 +49,27 @@ export const ProductDetailsPage = () => {
     }
 
     setCarrito(nuevoCarrito); // el context se encarga de guardar en localStorage
-
-    /*
-    const key = `cart_${userName}`;
-    const carrito = JSON.parse(localStorage.getItem(key)) || [];
-
-    const index = carrito.findIndex(
-      (item) => item.id === productoConCantidad.id
-    );
-    if (index !== -1) {
-      carrito[index].cantidad += productoConCantidad.cantidad;
-    } else {
-      carrito.push(productoConCantidad);
-    }
-
-    localStorage.setItem(key, JSON.stringify(carrito));
-    */
-    console.log("Producto agregado al carrito:", productoConCantidad);
   };
 
   if (loading) return <p>Cargando producto...</p>;
   if (!product) return <p>Producto no encontrado.</p>;
 
+  const nombreApp = import.meta.env.VITE_NOMBRE_APP;
+
   return (
-    <div>
-      <ProductDetails product={product} onAddToCart={handleAddToCart} />
-    </div>
+    <>
+      <Helmet>
+        <title>{product.name} - {nombreApp}</title>
+        <meta name="description" content={product.description} />
+        <meta property="og:title" content={product.name} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.image} />
+      </Helmet>
+
+      <div>
+        <ProductDetails product={product} onAddToCart={handleAddToCart} />
+      </div>
+    </>
   );
 };
 
