@@ -12,11 +12,7 @@ export const Productos = () => {
   const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Cargo el primer lote de productos
-  useEffect(() => {
-    cargarProductos();
-  }, []);
-
+  /*
   const cargarProductos = async () => {
     try {
       setCargando(true);
@@ -33,7 +29,34 @@ export const Productos = () => {
       setCargando(false);
     }
   };
+  */
+  const cargarProductos = async (lastDocParam = null) => {
+  try {
+    setCargando(true);
 
+    const { productos: nuevosProductos, lastDoc: nuevoLastDoc } = await fetchProductos({
+      pageSize: 10,
+      lastDoc: lastDocParam,
+    });
+
+    if (lastDocParam) {
+      // Si estamos cargando la siguiente página, concatenar los productos
+      setProductos(prev => [...prev, ...nuevosProductos]);
+    } else {
+      // Si es la primera carga o recarga, reemplazar el listado
+      setProductos(nuevosProductos);
+    }
+
+    setLastDoc(nuevoLastDoc);
+    setHasMore(!!nuevoLastDoc && nuevosProductos.length === 10);
+  } catch (err) {
+    setError("No pudimos obtener los productos.");
+  } finally {
+    setCargando(false);
+  }
+};
+
+  /*
   const handleBuscar = async (e) => {
     const valor = e.target.value;
     setSearchTerm(valor);
@@ -56,6 +79,37 @@ export const Productos = () => {
       setCargando(false);
     }
   };
+  */
+  const handleBuscar = async (e) => {
+  const valor = e.target.value;
+  setSearchTerm(valor);
+
+  if (valor.trim() === "") {
+    // Si se borra el input, recargo todos los productos desde cero
+    setLastDoc(null);
+    setHasMore(true);
+    cargarProductos(null); // llamar sin lastDoc para cargar desde el inicio
+    return;
+  }
+
+  try {
+    setCargando(true);
+    const productosEncontrados = await buscarProductosPorNombre(valor.trim().toLowerCase());
+    setProductos(productosEncontrados);
+    setHasMore(false);  // no hay paginación para búsqueda
+    setLastDoc(null);   // resetear lastDoc porque estamos en búsqueda
+  } catch (err) {
+    console.error("Error buscando productos:", err);
+    setError("Error buscando productos.");
+  } finally {
+    setCargando(false);
+  }
+};
+
+  // Cargo el primer lote de productos
+  useEffect(() => {
+    cargarProductos();
+  }, []);
 
   return (
     <>
@@ -97,12 +151,12 @@ export const Productos = () => {
         )}
 
         {hasMore && !cargando && (
-          <div className="text-center mt-4">
-            <button className="card-button" onClick={cargarProductos}>
-              Cargar más
-            </button>
-          </div>
-        )}
+  <div className="text-center mt-4">
+    <button className="card-button" onClick={() => cargarProductos(lastDoc)}>
+      Cargar más
+    </button>
+  </div>
+)}
       </Container>
     </>
   );
