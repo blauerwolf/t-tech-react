@@ -36,7 +36,8 @@ export const AdminProducts = () => {
   };
 
   const handleEdit = (id) => {
-    console.log('Editar producto', id);
+    console.log(id);
+    navigate(`/admin/productos/editar/${id}`);
   };
 
   const handleDelete = (id) => {
