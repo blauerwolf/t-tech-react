@@ -44,7 +44,7 @@ npm run dev
 ## Generar Build para producción
 Para generar el build de instalación:  
 ```
-
+npm run build
 ```
 
 ## Panel de administrador versión online
